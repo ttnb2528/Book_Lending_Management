@@ -13,11 +13,13 @@
             placeholder="Tìm kiếm nhà xuất bản..."
             class="flex-grow p-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
           />
-          <button
-            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            Thêm NXB
-          </button>
+          <router-link :to="{ name: 'AddPublisher' }">
+            <button
+              class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Thêm NXB
+            </button>
+          </router-link>
         </div>
         <div class="overflow-x-auto">
           <table class="min-w-full bg-white">
@@ -71,6 +73,9 @@
 import { onMounted, ref } from "vue";
 import { PencilIcon, TrashIcon } from "@heroicons/vue/24/outline";
 import publisherService from "@/services/publisher.service";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const props = defineProps({
   activeSection: String,
@@ -84,6 +89,21 @@ const getAllPublishers = async () => {
     publisher.value = response;
   } catch (error) {
     console.error("Error while getting publisher:", error);
+  }
+};
+
+const editPublisher = (id) => {
+  router.push({ name: "EditPublisher", params: { id } });
+};
+
+const deletePublisher = async (id) => {
+  if (window.confirm("Bạn có chắc muốn xóa?")) {
+    try {
+      await publisherService.deletePublisher(id);
+      getAllPublishers();
+    } catch (error) {
+      console.error("Error while deleting publisher:", error);
+    }
   }
 };
 

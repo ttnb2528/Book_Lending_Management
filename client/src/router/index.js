@@ -11,6 +11,8 @@ import AddStaff from "@/views/AddStaff.vue";
 import EditStaff from "@/views/EditStaff.vue";
 import AddUser from "@/views/AddUser.vue";
 import EditUser from "@/views/EditUser.vue";
+import AddPublisher from "@/views/AddPublisher.vue";
+import EditPublisher from "@/views/EditPublisher.vue";
 
 const routes = [
   {
@@ -42,6 +44,19 @@ const routes = [
     path: "/publisher",
     name: "Publisher",
     component: Publisher,
+  },
+
+  {
+    path: "/addPublisher",
+    name: "AddPublisher",
+    component: AddPublisher,
+  },
+
+  {
+    path: "/editPublisher/:id",
+    name: "EditPublisher",
+    component: EditPublisher,
+    props: true,
   },
 
   {

@@ -80,7 +80,7 @@ class publisherService {
 
   async getPublisherById(id) {
     try {
-      const publisher = await this.Publisher.findOne({ _id: new ObjectId(id) });
+      const publisher = await this.Publisher.findOne({ MaNXB: id });
 
       return publisher;
     } catch (error) {
@@ -94,7 +94,7 @@ class publisherService {
   async updatePublisher(id, payload) {
     try {
       const res = await this.Publisher.updateOne(
-        { _id: new ObjectId(id) },
+        { MaNXB: id },
         { $set: payload }
       );
 
@@ -119,7 +119,7 @@ class publisherService {
 
   async deletePublisher(id) {
     try {
-      const res = await this.Publisher.deleteOne({ _id: new ObjectId(id) });
+      const res = await this.Publisher.deleteOne({ MaNXB: id });
 
       if (!res) {
         return {
