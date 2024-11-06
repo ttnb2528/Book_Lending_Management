@@ -9,6 +9,8 @@ import Staff from "@/views/Staff.vue";
 import User from "@/views/User.vue";
 import AddStaff from "@/views/AddStaff.vue";
 import EditStaff from "@/views/EditStaff.vue";
+import AddUser from "@/views/AddUser.vue";
+import EditUser from "@/views/EditUser.vue";
 
 const routes = [
   {
@@ -65,6 +67,19 @@ const routes = [
     path: "/user",
     name: "User",
     component: User,
+  },
+
+  {
+    path: "/addUser",
+    name: "AddUser",
+    component: AddUser,
+  },
+
+  {
+    path: "/editUser/:id",
+    name: "EditUser",
+    component: EditUser,
+    props: true,
   },
 
   {

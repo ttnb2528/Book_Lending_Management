@@ -13,13 +13,13 @@
             placeholder="Tìm kiếm nhân viên..."
             class="flex-grow p-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
           />
-          <!-- <router-link :to="{ name: 'AddBook' }"> -->
-          <button
-            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            Thêm Nhân viên
-          </button>
-          <!-- </router-link> -->
+          <router-link :to="{ name: 'AddUser' }">
+            <button
+              class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Thêm Nhân viên
+            </button>
+          </router-link>
         </div>
         <div class="mt-4">
           <table class="min-w-full bg-white">
@@ -83,6 +83,9 @@
 import { onMounted, ref } from "vue";
 import { PencilIcon, TrashIcon } from "@heroicons/vue/24/outline";
 import userService from "@/services/user.service.js";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const props = defineProps({
   activeSection: String,
@@ -98,6 +101,21 @@ const getAllUsers = async () => {
     console.log(users.value);
   } catch (error) {
     console.error("Error while getting books:", error);
+  }
+};
+
+const editUser = (userId) => {
+  router.push({ name: "EditUser", params: { id: userId } });
+};
+
+const deleteUser = (userId) => {
+  try {
+    if (window.confirm("Bạn có chắc chắn muốn xóa nhân viên này không?")) {
+      userService.deleteUser(userId);
+      users.value = users.value.filter((user) => user.MaID !== userId);
+    }
+  } catch (error) {
+    console.log("Error while deleting user:", error);
   }
 };
 onMounted(() => {
