@@ -13,9 +13,15 @@ router.post("/auth", UsersController.loginUser);
 
 router.post("/logout", UsersController.logoutUser);
 
-router.get("/profile", UsersController.getUserById);
+router.get("/profile", UsersController.getCurrentUser);
 
-router.put("/profile/edit/:id", UsersController.updateUser);
+router.get("/:id", UsersController.getUserById);
+
+router.put("/profile/edit/:id", UsersController.updateCurrentUser);
+
+router.delete("/:id", UsersController.deleteUser);
+
+router.put("/:id", UsersController.updateUser);
 
 // // ADMIN ROLE
 // router

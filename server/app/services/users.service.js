@@ -112,7 +112,23 @@ class UsersService {
     try {
       console.log(id);
 
-      const user = await this.User.findOne({ _id: new ObjectId(id) });
+      const user = await this.User.findOne({ MaID: id });
+
+      return user;
+    } catch (error) {
+      return {
+        statusCode: -1,
+        by: error.message,
+        message: "Không thể lấy thông tin người dùng",
+      };
+    }
+  }
+
+  async getCurrentUser(id) {
+    try {
+      console.log(id);
+
+      const user = await this.User.findOne({ MaID: id });
 
       delete user.password;
       return user;
@@ -169,6 +185,36 @@ class UsersService {
 
   async updateUser(id, payload) {
     try {
+      const user = this.extractUserData(payload);
+
+      console.log(user);
+
+      const res = await this.User.updateOne(
+        { MaID: id },
+        { $set: { ...user } }
+      );
+
+      if (!res) {
+        return {
+          statusCode: 2,
+          message: "Có lỗi xảy ra khi cập nhật người dùng",
+        };
+      }
+
+      return {
+        statusCode: 0,
+        message: "Cập nhật người dùng thành công",
+      };
+    } catch (error) {
+      return {
+        statusCode: -1,
+        message: error.message,
+      };
+    }
+  }
+
+  async updateCurrentUser(id, payload) {
+    try {
       const { password } = payload;
       const user = this.extractUserData(payload);
 
@@ -178,7 +224,7 @@ class UsersService {
       const hashPassword = await bcrypt.hash(password, salt);
 
       const res = await this.User.updateOne(
-        { _id: new ObjectId(id) },
+        { MaId: id },
         { $set: { ...user, password: hashPassword } }
       );
 
@@ -203,7 +249,7 @@ class UsersService {
 
   async deleteUser(id) {
     try {
-      const res = await this.User.deleteOne({ _id: new ObjectId(id) });
+      const res = await this.User.deleteOne({ MaID: id });
 
       if (!res) {
         return {

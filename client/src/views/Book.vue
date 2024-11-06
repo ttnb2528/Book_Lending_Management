@@ -139,7 +139,7 @@ watch(searchText, filterBooks);
 
 const editBook = (bookId) => {
   // Điều hướng đến trang EditBook cùng với ID sách
-  console.log(`Edit book with ID: ${bookId}`);
+  // console.log(`Edit book with ID: ${bookId}`);
   router.push({ name: "EditBook", params: { id: bookId } });
 };
 

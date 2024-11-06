@@ -6,11 +6,12 @@ class UserService {
   }
 
   async getUsers(data) {
-    console.log(data);
     return (await this.api.post("/UserByRole", data)).data;
   }
 
   async getUser(id) {
+    console.log(id);
+
     return (await this.api.get(`/${id}`)).data;
   }
 
@@ -19,10 +20,15 @@ class UserService {
   }
 
   async updateUser(id, data) {
+    console.log(id);
+    console.log(data);
+
     return (await this.api.put(`/${id}`, data)).data;
   }
 
   async deleteUser(id) {
+    console.log(id);
+
     return (await this.api.delete(`/${id}`)).data;
   }
 }

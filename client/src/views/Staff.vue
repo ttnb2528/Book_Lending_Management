@@ -13,13 +13,13 @@
             placeholder="Tìm kiếm nhân viên..."
             class="flex-grow p-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
           />
-          <!-- <router-link :to="{ name: 'AddBook' }"> -->
-          <button
-            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            Thêm Nhân viên
-          </button>
-          <!-- </router-link> -->
+          <router-link :to="{ name: 'AddStaff' }">
+            <button
+              class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Thêm Nhân viên
+            </button>
+          </router-link>
         </div>
         <div class="mt-4">
           <table class="min-w-full bg-white">
@@ -54,7 +54,7 @@
                 <td class="py-3 px-6 text-left">{{ staff.DiaChi }}</td>
                 <td class="py-3 px-6 text-left">{{ staff.ChucVu }}</td>
                 <td class="py-3 px-6 text-left">
-                  {{ staff.SoDienThoai }}
+                  {{ staff.DienThoai }}
                 </td>
                 <td class="py-3 px-6 text-left">
                   <div class="flex items-center space-x-2">
@@ -84,8 +84,10 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { PencilIcon, TrashIcon } from "@heroicons/vue/24/outline";
-// import staffService from "@/services/staff.service.js";
 import userService from "@/services/user.service.js";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const props = defineProps({
   activeSection: String,
@@ -103,6 +105,22 @@ const getAllStaffs = async () => {
     console.error("Error while getting books:", error);
   }
 };
+
+const editStaff = (staffId) => {
+  router.push({ name: "EditStaff", params: { id: staffId } });
+};
+
+const deleteStaff = (staffId) => {
+  try {
+    if (window.confirm("Bạn có chắc chắn muốn xóa nhân viên này không?")) {
+      userService.deleteUser(staffId);
+      staffs.value = staffs.value.filter((staff) => staff.MaID !== staffId);
+    }
+  } catch (error) {
+    console.log("Error while deleting staff:", error);
+  }
+};
+
 onMounted(() => {
   getAllStaffs();
 });

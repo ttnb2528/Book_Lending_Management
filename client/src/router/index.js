@@ -7,6 +7,8 @@ import Publisher from "@/views/Publisher.vue";
 import Lending from "@/views/Lending.vue";
 import Staff from "@/views/Staff.vue";
 import User from "@/views/User.vue";
+import AddStaff from "@/views/AddStaff.vue";
+import EditStaff from "@/views/EditStaff.vue";
 
 const routes = [
   {
@@ -44,6 +46,19 @@ const routes = [
     path: "/staff",
     name: "Staff",
     component: Staff,
+  },
+
+  {
+    path: "/addStaff",
+    name: "AddStaff",
+    component: AddStaff,
+  },
+
+  {
+    path: "/editStaff/:id",
+    name: "EditStaff",
+    component: EditStaff,
+    props: true,
   },
 
   {
