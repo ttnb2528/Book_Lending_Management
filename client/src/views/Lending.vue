@@ -13,13 +13,13 @@
             placeholder="Tìm kiếm Phiếu mượn..."
             class="flex-grow p-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
           />
-          <!-- <router-link :to="{ name: 'AddBook' }"> -->
-          <button
-            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            Thêm Phiếu mượn
-          </button>
-          <!-- </router-link> -->
+          <router-link :to="{ name: 'AddLending' }">
+            <button
+              class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Thêm Phiếu mượn
+            </button>
+          </router-link>
         </div>
         <div class="mt-4">
           <table class="min-w-full bg-white">
@@ -46,7 +46,9 @@
                   {{ lending.MaPhieuMuon }}
                 </td>
                 <td class="py-3 px-6 text-left">{{ lending.userInfo.MaID }}</td>
-                <td class="py-3 px-6 text-left">{{ lending.bookInfo.MaSach }}</td>
+                <td class="py-3 px-6 text-left">
+                  {{ lending.bookInfo.MaSach }}
+                </td>
                 <td class="py-3 px-6 text-left">{{ lending.NgayMuon }}</td>
                 <td class="py-3 px-6 text-left">{{ lending.NgayTra }}</td>
                 <td class="py-3 px-6 text-left">{{ lending.TinhTrang }}</td>
@@ -79,6 +81,9 @@
 import { onMounted, ref } from "vue";
 import { PencilIcon, TrashIcon } from "@heroicons/vue/24/outline";
 import LendingService from "@/services/lending.service.js";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const props = defineProps({
   activeSection: String,
@@ -93,11 +98,29 @@ const getAllLendings = async () => {
     lendings.value = response;
     // console.log(response);
     console.log(lendings.value);
-    
   } catch (error) {
     console.error("Error while getting books:", error);
   }
 };
+
+const editLending = (id) => {
+  console.log("Edit lending with id:", id);
+  router.push({ name: "EditLending", params: { id } });
+};
+
+const deleteLending = async (id) => {
+  if (window.confirm("Bạn có chắc muốn xóa?")) {
+    try {
+      await LendingService.deleteLending(id);
+      lendings.value = lendings.value.filter(
+        (lending) => lending.MaPhieuMuon !== id
+      );
+    } catch (error) {
+      console.error("Error while deleting lending:", error);
+    }
+  }
+};
+
 onMounted(() => {
   getAllLendings();
 });

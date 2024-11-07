@@ -13,6 +13,8 @@ import AddUser from "@/views/AddUser.vue";
 import EditUser from "@/views/EditUser.vue";
 import AddPublisher from "@/views/AddPublisher.vue";
 import EditPublisher from "@/views/EditPublisher.vue";
+import AddLending from "@/views/AddLending.vue";
+import EditLending from "@/views/EditLending.vue";
 
 const routes = [
   {
@@ -101,6 +103,19 @@ const routes = [
     path: "/lending",
     name: "Lending",
     component: Lending,
+  },
+
+  {
+    path: "/addLending",
+    name: "AddLending",
+    component: AddLending,
+  },
+
+  {
+    path: "/editLending/:id",
+    name: "EditLending",
+    component: EditLending,
+    props: true,
   },
 
   {

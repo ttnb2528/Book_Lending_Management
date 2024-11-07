@@ -4,27 +4,23 @@ import MongoDB from "../util/mongodb.util.js";
 
 class LendingController {
   static async createLending(req, res, next) {
-    const { MaDocGia, MaSach, NgayTra } = req.body;
+    const { MaDocGia, MaSach } = req.body;
 
-    if (!MaDocGia || !MaSach || !NgayTra) {
-      return next(
-        new ApiError(400, "MaDocGia, MaSach and NgayTra are required")
-      );
+    console.log(req.body);
+
+    if (!MaDocGia || !MaSach) {
+      return next(new ApiError(400, "MaDocGia and MaSach are required"));
     }
 
     try {
       const lendingService = new LendingService(MongoDB.client);
 
-      const response = await lendingService.createLending({
-        MaDocGia,
-        MaSach,
-        NgayTra,
-      });
+      const response = await lendingService.createLending(req.body);
 
       if (response.statusCode === 0) {
         return res.status(201).json({ data: response });
       } else if (response.statusCode === 1) {
-        return res.status(409).json({ data: response });
+        return res.status(300).json({ data: response.message });
       } else {
         return res.status(500).json({ data: response });
       }
@@ -71,11 +67,11 @@ class LendingController {
 
   static async updateLendingById(req, res, next) {
     const { id } = req.params;
-    const { MaDocGia, MaSach, NgayTra } = req.body;
+    const { MaDocGia, MaSach } = req.body;
 
-    if (!MaDocGia || !MaSach || !NgayTra) {
+    if (!MaDocGia || !MaSach) {
       return next(
-        new ApiError(400, "MaDocGia, MaSach and NgayTra are required")
+        new ApiError(400, "MaDocGia and MaSach are required")
       );
     }
 

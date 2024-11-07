@@ -1,5 +1,3 @@
-import { ObjectId } from "mongodb";
-
 const LendingStatus = {
   PENDING: "Chờ xử lý",
   BORROWED: "Đang cho mượn",
@@ -17,7 +15,7 @@ class LendingService {
       MaPhieuMuon: payload.MaPhieuMuon,
       MaDocGia: payload.MaDocGia,
       MaSach: payload.MaSach,
-      NgayMuon: payload.NgayMuon || new Date(),
+      NgayMuon: payload.NgayMuon,
       NgayTra: payload.NgayTra,
       TinhTrang: Object.values(LendingStatus).includes(payload.TinhTrang)
         ? payload.TinhTrang
@@ -140,7 +138,7 @@ class LendingService {
       const lending = await this.lending
         .aggregate([
           {
-            $match: { _id: new ObjectId(id) },
+            $match: { MaPhieuMuon: id },
           },
           {
             $lookup: {
@@ -172,6 +170,8 @@ class LendingService {
               TinhTrang: 1,
               "userInfo.Ten": 1, // Chỉ lấy tên người dùng từ userInfo
               "userInfo.email": 1, // Lấy email người dùng
+              "userInfo.MaID": 1,
+              "bookInfo.MaSach": 1,
               "bookInfo.TenSach": 1, // Chỉ lấy tên sách từ bookInfo
               "bookInfo.TacGia": 1, // Lấy tác giả sách
               "bookInfo.DonGia": 1, // Lấy đơn giá sách
@@ -191,8 +191,12 @@ class LendingService {
 
   async updateLending(id, updates) {
     try {
+      if ("_id" in updates) {
+        delete updates._id;
+      }
+
       const currentLending = await this.lending.findOne({
-        _id: new ObjectId(id),
+        MaPhieuMuon: id,
       });
       if (!currentLending) {
         return {
@@ -231,7 +235,7 @@ class LendingService {
 
       // Thực hiện cập nhật phiếu mượn
       const updateResult = await this.lending.updateOne(
-        { _id: new ObjectId(id) },
+        { MaPhieuMuon: id },
         { $set: updates }
       );
 
@@ -257,7 +261,7 @@ class LendingService {
 
   async deleteLending(id) {
     try {
-      const res = await this.lending.deleteOne({ _id: new ObjectId(id) });
+      const res = await this.lending.deleteOne({ MaPhieuMuon: id });
 
       if (!res) {
         return {
