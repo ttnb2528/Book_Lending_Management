@@ -190,6 +190,8 @@ class LendingService {
   }
 
   async updateLending(id, updates) {
+    console.log("Updates:", updates);
+
     try {
       if ("_id" in updates) {
         delete updates._id;
@@ -206,31 +208,41 @@ class LendingService {
       }
 
       // Kiểm tra tình trạng hiện tại và tình trạng mới
-      if (updates.TinhTrang && updates.TinhTrang !== currentLending.TinhTrang) {
-        // Chỉ cho phép chuyển đổi hợp lệ giữa các trạng thái
-        const validTransitions = {
-          [LendingStatus.PENDING]: [
-            LendingStatus.BORROWED,
-            LendingStatus.RETURNED,
-          ], // Cho phép chuyển từ Chờ xử lý sang Đã trả
-          [LendingStatus.BORROWED]: [
-            LendingStatus.RETURNED,
-            LendingStatus.OVERDUE,
-          ],
-          [LendingStatus.OVERDUE]: [LendingStatus.RETURNED],
+      // if (updates.TinhTrang && updates.TinhTrang !== currentLending.TinhTrang) {
+      // Chỉ cho phép chuyển đổi hợp lệ giữa các trạng thái
+      const validTransitions = {
+        [LendingStatus.PENDING]: [
+          LendingStatus.PENDING,
+          LendingStatus.BORROWED,
+          LendingStatus.RETURNED,
+        ], // Cho phép chuyển từ Chờ xử lý sang Đã trả
+        [LendingStatus.BORROWED]: [
+          LendingStatus.BORROWED,
+          LendingStatus.RETURNED,
+          LendingStatus.OVERDUE,
+        ],
+        [LendingStatus.OVERDUE]: [
+          LendingStatus.OVERDUE,
+          LendingStatus.RETURNED,
+        ],
+      };
+
+      const allowedTransitions = validTransitions[currentLending.TinhTrang];
+
+      console.log("Current Status:", currentLending.TinhTrang); // Trạng thái hiện tại
+      console.log("New Status:", updates.TinhTrang); // Trạng thái mới
+      console.log("Allowed Transitions:", allowedTransitions);
+      if (!allowedTransitions.includes(updates.TinhTrang)) {
+        return {
+          statusCode: 2,
+          message: "Không thể cập nhật trạng thái phiếu mượn theo yêu cầu",
         };
+      }
+      // }
 
-        const allowedTransitions = validTransitions[currentLending.TinhTrang];
-
-        console.log("Current Status:", currentLending.TinhTrang); // Trạng thái hiện tại
-        console.log("New Status:", updates.TinhTrang); // Trạng thái mới
-        console.log("Allowed Transitions:", allowedTransitions);
-        if (!allowedTransitions.includes(updates.TinhTrang)) {
-          return {
-            statusCode: 2,
-            message: "Không thể cập nhật trạng thái phiếu mượn theo yêu cầu",
-          };
-        }
+      if (updates.TinhTrang === LendingStatus.RETURNED) {
+        const currentDate = new Date().toISOString().split("T")[0]; // Lấy ngày hiện tại theo định dạng yyyy-mm-dd
+        updates.NgayTra = currentDate;
       }
 
       // Thực hiện cập nhật phiếu mượn

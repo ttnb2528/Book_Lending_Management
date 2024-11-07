@@ -70,16 +70,14 @@ class LendingController {
     const { MaDocGia, MaSach } = req.body;
 
     if (!MaDocGia || !MaSach) {
-      return next(
-        new ApiError(400, "MaDocGia and MaSach are required")
-      );
+      return next(new ApiError(400, "MaDocGia and MaSach are required"));
     }
 
     try {
       const lendingService = new LendingService(MongoDB.client);
       const response = await lendingService.updateLending(id, req.body);
 
-      if (response.statusCode === 0) {
+      if (response.statusCode === 0 || response.statusCode === 3) {
         return res.status(200).json({ data: response });
       } else {
         return res.status(500).json({ data: response });
