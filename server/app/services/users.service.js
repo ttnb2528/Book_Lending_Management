@@ -109,10 +109,16 @@ class UsersService {
   }
 
   async getUserById(id) {
-    try {
-      console.log(id);
+    console.log(id);
 
-      const user = await this.User.findOne({ MaID: id });
+    try {
+      const query = ObjectId.isValid(id)
+        ? { _id: new ObjectId(id) }
+        : { MaID: id };
+
+      console.log(query);
+
+      const user = await this.User.findOne(query);
 
       return user;
     } catch (error) {
@@ -126,9 +132,9 @@ class UsersService {
 
   async getCurrentUser(id) {
     try {
-      console.log(id);
+      // console.log(id);
 
-      const user = await this.User.findOne({ MaID: id });
+      const user = await this.User.findOne({ _id: new ObjectId(id) });
 
       delete user.password;
       return user;
@@ -305,12 +311,14 @@ class UsersService {
   }
 
   async logoutUser(res) {
-    res.cookie("jwt", "", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV !== "development",
-      sameSite: "strict",
-      maxAge: 0, // Xóa cookie
-    });
+    // res.cookie("jwt", "", {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV !== "development",
+    //   sameSite: "strict",
+    //   maxAge: 0, // Xóa cookie
+    // });
+
+    res.clearCookie("jwt");
 
     return {
       statusCode: 0,

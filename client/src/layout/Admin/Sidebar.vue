@@ -17,12 +17,14 @@
       </router-link>
     </nav>
     <div class="mt-auto p-4">
-      <button
-        class="w-full flex items-center text-left py-2 px-4 hover:bg-green-700 transition-colors duration-200"
-      >
-        <UserCircleIcon class="h-5 w-5 mr-3" />
-        Thông tin cá nhân
-      </button>
+      <router-link to="/admin/profile">
+        <button
+          class="w-full flex items-center text-left py-2 px-4 hover:bg-green-700 transition-colors duration-200"
+        >
+          <UserCircleIcon class="h-5 w-5 mr-3" />
+          Thông tin cá nhân
+        </button>
+      </router-link>
       <button
         class="w-full flex items-center text-left py-2 px-4 hover:bg-green-700 transition-colors duration-200"
         @click="logout"
@@ -48,6 +50,7 @@ import {
   DocumentTextIcon,
   BuildingOfficeIcon,
 } from "@heroicons/vue/24/outline";
+import authService from "@/services/auth.service.js";
 
 const menuItems = [
   { name: "Quản lý Sách", path: "/admin/book", icon: BookOpenIcon },
@@ -64,6 +67,7 @@ const menuItems = [
 const router = useRouter();
 
 const logout = () => {
+  authService.logout();
   localStorage.removeItem("user");
   router.push({ name: "AdminLogin" });
 };

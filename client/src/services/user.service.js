@@ -15,6 +15,10 @@ class UserService {
     return (await this.api.get(`/${id}`)).data;
   }
 
+  async getCurrentUser() {
+    return (await this.api.get("/profile")).data;
+  }
+
   async createUser(data) {
     return (await this.api.post("/", data)).data;
   }

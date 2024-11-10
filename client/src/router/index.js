@@ -18,6 +18,7 @@ import EditLending from "@/views/Admin/EditLending.vue";
 
 // temp
 import Default from "@/views/Default.vue";
+import Profile from "@/views/Admin/Profile.vue";
 
 const routes = [
   {
@@ -125,6 +126,12 @@ const routes = [
     path: "/admin/login",
     name: "AdminLogin",
     component: LoginPage,
+  },
+
+  {
+    path: "/admin/profile",
+    name: "AdminProfile",
+    component: Profile,
   },
 ];
 

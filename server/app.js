@@ -20,10 +20,10 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 
-app.use("/api/v1/user", userRouter);
+// app.use("/api/v1/user", userRouter);
 app.use("/api/v1/book", bookRouter);
 app.use("/api/v1/publisher", publisherRouter);
-app.use("/api/v1/staff", staffRouter);
+// app.use("/api/v1/staff", staffRouter);
 app.use("/api/v1/lending", lendingRouter);
 
 app.use("/api/v1/users", usersRouter);

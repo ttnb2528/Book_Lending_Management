@@ -59,7 +59,6 @@ class UsersController {
 
   static async getAllUsersByRole(req, res, next) {
     const { role } = req.body;
-    console.log(role);
 
     if (!role) {
       return next(new ApiError(400, "Role is required"));
@@ -99,6 +98,8 @@ class UsersController {
   static async getCurrentUser(req, res, next) {
     try {
       const usersService = new UsersService(MongoDB.client);
+
+      console.log(req.user);
 
       const user = await usersService.getCurrentUser(req.user.id);
 
@@ -228,6 +229,8 @@ class UsersController {
       const response = await usersService.loginUser(email, password);
 
       if (response.statusCode === 0) {
+        console.log("response token: ", response.token);
+        
         setTokenCookie(res, response.token);
         return res.status(200).json({ data: response });
       } else {
