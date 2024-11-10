@@ -1,126 +1,129 @@
 import { createWebHistory, createRouter } from "vue-router";
-import LoginPage from "@/views/LoginPage.vue";
-import Book from "@/views/Book.vue";
-import AddBook from "@/views/AddBook.vue";
-import EditBook from "@/views/EditBook.vue";
-import Publisher from "@/views/Publisher.vue";
-import Lending from "@/views/Lending.vue";
-import Staff from "@/views/Staff.vue";
-import User from "@/views/User.vue";
-import AddStaff from "@/views/AddStaff.vue";
-import EditStaff from "@/views/EditStaff.vue";
-import AddUser from "@/views/AddUser.vue";
-import EditUser from "@/views/EditUser.vue";
-import AddPublisher from "@/views/AddPublisher.vue";
-import EditPublisher from "@/views/EditPublisher.vue";
-import AddLending from "@/views/AddLending.vue";
-import EditLending from "@/views/EditLending.vue";
+import LoginPage from "@/views/Auth/LoginPage.vue";
+import Book from "@/views/Admin/Book.vue";
+import AddBook from "@/views/Admin/AddBook.vue";
+import EditBook from "@/views/Admin/EditBook.vue";
+import Publisher from "@/views/Admin/Publisher.vue";
+import Lending from "@/views/Admin/Lending.vue";
+import Staff from "@/views/Admin/Staff.vue";
+import User from "@/views/Admin/User.vue";
+import AddStaff from "@/views/Admin/AddStaff.vue";
+import EditStaff from "@/views/Admin/EditStaff.vue";
+import AddUser from "@/views/Admin/AddUser.vue";
+import EditUser from "@/views/Admin/EditUser.vue";
+import AddPublisher from "@/views/Admin/AddPublisher.vue";
+import EditPublisher from "@/views/Admin/EditPublisher.vue";
+import AddLending from "@/views/Admin/AddLending.vue";
+import EditLending from "@/views/Admin/EditLending.vue";
+
+// temp
+import Default from "@/views/Default.vue";
 
 const routes = [
   {
     path: "/",
+    name: "Home",
+    component: Default,
+  },
+
+  {
+    path: "/admin/book",
     name: "Dashboard",
     component: Book,
   },
 
   {
-    path: "/book",
-    name: "Book",
-    component: Book,
-  },
-
-  {
-    path: "/addBook",
+    path: "/admin/addBook",
     name: "AddBook",
     component: AddBook,
   },
 
   {
-    path: "/editBook/:id",
+    path: "/admin/editBook/:id",
     name: "EditBook",
     component: EditBook,
     props: true,
   },
 
   {
-    path: "/publisher",
+    path: "/admin/publisher",
     name: "Publisher",
     component: Publisher,
   },
 
   {
-    path: "/addPublisher",
+    path: "/admin/addPublisher",
     name: "AddPublisher",
     component: AddPublisher,
   },
 
   {
-    path: "/editPublisher/:id",
+    path: "/admin/editPublisher/:id",
     name: "EditPublisher",
     component: EditPublisher,
     props: true,
   },
 
   {
-    path: "/staff",
+    path: "/admin/staff",
     name: "Staff",
     component: Staff,
   },
 
   {
-    path: "/addStaff",
+    path: "/admin/addStaff",
     name: "AddStaff",
     component: AddStaff,
   },
 
   {
-    path: "/editStaff/:id",
+    path: "/admin/editStaff/:id",
     name: "EditStaff",
     component: EditStaff,
     props: true,
   },
 
   {
-    path: "/user",
+    path: "/admin/user",
     name: "User",
     component: User,
   },
 
   {
-    path: "/addUser",
+    path: "/admin/addUser",
     name: "AddUser",
     component: AddUser,
   },
 
   {
-    path: "/editUser/:id",
+    path: "/admin/editUser/:id",
     name: "EditUser",
     component: EditUser,
     props: true,
   },
 
   {
-    path: "/lending",
+    path: "/admin/lending",
     name: "Lending",
     component: Lending,
   },
 
   {
-    path: "/addLending",
+    path: "/admin/addLending",
     name: "AddLending",
     component: AddLending,
   },
 
   {
-    path: "/editLending/:id",
+    path: "/admin/editLending/:id",
     name: "EditLending",
     component: EditLending,
     props: true,
   },
 
   {
-    path: "/login",
-    name: "Login",
+    path: "/admin/login",
+    name: "AdminLogin",
     component: LoginPage,
   },
 ];

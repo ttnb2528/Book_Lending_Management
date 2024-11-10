@@ -1,18 +1,23 @@
 <template>
-  <div
-    class="min-h-screen bg-green-50 flex justify-center py-4 px-4 sm:px-6 lg:px-8"
-  >
-    <div class="max-w-md w-full space-y-4 overflow-y-auto scroll-container">
-      <div>
-        <h2 class="text-center text-3xl font-extrabold text-green-900">
-          Thêm Độc Giả mới
-        </h2>
-        <p class="mt-2 text-center text-sm text-green-600">
-          Nhập thông tin chi tiết của Độc Giả
-        </p>
+  <div class="flex h-screen w-full bg-gray-100">
+    <Sidebar />
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <div
+        class="min-h-screen bg-green-50 flex justify-center py-4 px-4 sm:px-6 lg:px-8"
+      >
+        <div class="max-w-md w-full space-y-4 overflow-y-auto scroll-container">
+          <div>
+            <h2 class="text-center text-3xl font-extrabold text-green-900">
+              Thêm Độc Giả mới
+            </h2>
+            <p class="mt-2 text-center text-sm text-green-600">
+              Nhập thông tin chi tiết của Độc Giả
+            </p>
+          </div>
+          <UserForm :user="{}" @submit:user="addUser" @cancel="cancelAddUser" />
+          <p>{{ message }}</p>
+        </div>
       </div>
-      <UserForm :user="{}" @submit:user="addUser" @cancel="cancelAddUser" />
-      <p>{{ message }}</p>
     </div>
   </div>
 </template>
@@ -20,9 +25,11 @@
 <script>
 import UserForm from "@/components/UserForm.vue";
 import userService from "@/services/user.service.js";
+import Sidebar from "@/layout/Admin/Sidebar.vue";
 
 export default {
   components: {
+    Sidebar,
     UserForm,
   },
   data() {
