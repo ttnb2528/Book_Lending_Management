@@ -119,7 +119,7 @@ class UsersController {
     const usersService = new UsersService(MongoDB.client);
     const user = await usersService.getUserById(id);
 
-    console.log(user);
+    // console.log(user);
 
     if (!user) {
       return next(new ApiError(404, "User not found"));
@@ -150,7 +150,9 @@ class UsersController {
 
   static async updateCurrentUser(req, res, next) {
     const { id } = req.params;
-    const { email, password, role, ...otherFields } = req.body;
+    const { email, password, ...otherFields } = req.body;
+    // console.log("abc", req.body);
+
     const usersService = new UsersService(MongoDB.client);
     const user = await usersService.getUserById(id);
 
@@ -158,8 +160,8 @@ class UsersController {
       return next(new ApiError(404, "User not found"));
     }
 
-    if (!email || !password || !role) {
-      return next(new ApiError(400, "email, password and role are required"));
+    if (!email) {
+      return next(new ApiError(400, "email and role are required"));
     }
 
     try {
@@ -168,7 +170,6 @@ class UsersController {
       const response = await usersService.updateCurrentUser(req.params.id, {
         email,
         password,
-        role,
         ...otherFields,
       });
 
@@ -188,7 +189,7 @@ class UsersController {
 
   static async deleteUser(req, res, next) {
     const { id } = req.params;
-    console.log(id);
+    // console.log(id);
 
     const usersService = new UsersService(MongoDB.client);
     const user = await usersService.getUserById(id);
@@ -217,7 +218,7 @@ class UsersController {
 
   static async loginUser(req, res, next) {
     const { email, password } = req.body;
-    console.log(email, password);
+    // console.log(email, password);
 
     if (!email || !password) {
       return next(new ApiError(400, "Email and password are required"));
@@ -229,8 +230,8 @@ class UsersController {
       const response = await usersService.loginUser(email, password);
 
       if (response.statusCode === 0) {
-        console.log("response token: ", response.token);
-        
+        // console.log("response token: ", response.token);
+
         setTokenCookie(res, response.token);
         return res.status(200).json({ data: response });
       } else {

@@ -6,7 +6,7 @@ class LendingController {
   static async createLending(req, res, next) {
     const { MaDocGia, MaSach } = req.body;
 
-    console.log(req.body);
+    // console.log(req.body);
 
     if (!MaDocGia || !MaSach) {
       return next(new ApiError(400, "MaDocGia and MaSach are required"));

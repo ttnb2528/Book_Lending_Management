@@ -63,7 +63,7 @@
                   <dt class="text-sm font-medium text-gray-500">Ngày sinh</dt>
                   <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     <!-- {{ formatDate(user.NgaySinh) }} -->
-                      {{ user.NgaySinh }}
+                    {{ user.NgaySinh }}
                   </dd>
                 </div>
                 <div
@@ -81,7 +81,7 @@
                     Số điện thoại
                   </dt>
                   <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    {{ user.SoDienThoai }}
+                    {{ user.DienThoai }}
                   </dd>
                 </div>
                 <div
@@ -97,7 +97,7 @@
           </div>
           <div class="flex justify-center">
             <button
-              @click="editProfile"
+              @click="editProfile(user.MaID)"
               class="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Chỉnh sửa thông tin
@@ -111,30 +111,19 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 // Assume we have a user service to fetch user data
 import userService from "@/services/user.service.js";
 import Sidebar from "@/layout/Admin/Sidebar.vue";
 
-const user = ref({
-  MaID: "",
-  email: "",
-  Ten: "",
-  Phai: "",
-  NgaySinh: "",
-  DiaChi: "",
-  SoDienThoai: "",
-  ChucVu: "",
-});
+const user = ref({});
 
-const formatDate = (dateString) => {
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  return new Date(dateString).toLocaleDateString("vi-VN", options);
-};
-
-const editProfile = () => {
+const editProfile = (userID) => {
   // Implement edit profile logic here
-  console.log("Edit profile clicked");
+  router.push({ name: "AdminEditProfile", params: { id: userID } });
 };
 
 const fetchUserData = async () => {

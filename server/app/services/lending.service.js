@@ -190,7 +190,7 @@ class LendingService {
   }
 
   async updateLending(id, updates) {
-    console.log("Updates:", updates);
+    // console.log("Updates:", updates);
 
     try {
       if ("_id" in updates) {
@@ -229,9 +229,9 @@ class LendingService {
 
       const allowedTransitions = validTransitions[currentLending.TinhTrang];
 
-      console.log("Current Status:", currentLending.TinhTrang); // Trạng thái hiện tại
-      console.log("New Status:", updates.TinhTrang); // Trạng thái mới
-      console.log("Allowed Transitions:", allowedTransitions);
+      // console.log("Current Status:", currentLending.TinhTrang); // Trạng thái hiện tại
+      // console.log("New Status:", updates.TinhTrang); // Trạng thái mới
+      // console.log("Allowed Transitions:", allowedTransitions);
       if (!allowedTransitions.includes(updates.TinhTrang)) {
         return {
           statusCode: 2,

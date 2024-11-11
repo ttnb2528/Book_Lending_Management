@@ -109,14 +109,14 @@ class UsersService {
   }
 
   async getUserById(id) {
-    console.log(id);
+    // console.log(id);
 
     try {
       const query = ObjectId.isValid(id)
         ? { _id: new ObjectId(id) }
         : { MaID: id };
 
-      console.log(query);
+      // console.log(query);
 
       const user = await this.User.findOne(query);
 
@@ -136,7 +136,7 @@ class UsersService {
 
       const user = await this.User.findOne({ _id: new ObjectId(id) });
 
-      delete user.password;
+      // delete user.password;
       return user;
     } catch (error) {
       return {
@@ -193,7 +193,7 @@ class UsersService {
     try {
       const user = this.extractUserData(payload);
 
-      console.log(user);
+      // console.log(user);
 
       const res = await this.User.updateOne(
         { MaID: id },
@@ -221,18 +221,25 @@ class UsersService {
 
   async updateCurrentUser(id, payload) {
     try {
-      const { password } = payload;
-      const user = this.extractUserData(payload);
+      const { password, ...userData } = payload;
+      // console.log(payload);
 
-      const saltRounds = Number(process.env.SALT);
-      const salt = await bcrypt.genSalt(saltRounds);
+      let updateData = userData;
 
-      const hashPassword = await bcrypt.hash(password, salt);
+      if (password) {
+        const saltRounds = Number(process.env.SALT);
+        const salt = await bcrypt.genSalt(saltRounds);
+        const hashPassword = await bcrypt.hash(password, salt);
+        updateData = { ...userData, password: hashPassword };
+      }
 
-      const res = await this.User.updateOne(
-        { MaId: id },
-        { $set: { ...user, password: hashPassword } }
-      );
+      console.log(updateData);
+      delete updateData._id;
+      // Cập nhật người dùng
+      const res = await this.User.updateOne({ MaID: id }, { $set: updateData });
+
+      console.log(res);
+      
 
       if (!res) {
         return {

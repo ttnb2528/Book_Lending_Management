@@ -118,7 +118,7 @@ class BookController {
   static async searchBook(req, res, next) {
     const { search } = req.query;
 
-    console.log(search);
+    // console.log(search);
     
     // if (!search) {
     //     return res.status(400).json({ error: "Missing search parameter" });

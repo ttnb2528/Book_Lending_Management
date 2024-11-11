@@ -171,7 +171,7 @@ class BookService {
   }
 
   async searchBook(query) {
-    console.log(query);
+    // console.log(query);
     
     try {
       const books = await this.Book.aggregate([

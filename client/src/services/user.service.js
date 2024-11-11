@@ -30,6 +30,13 @@ class UserService {
     return (await this.api.put(`/${id}`, data)).data;
   }
 
+  async updateCurrentUser(id, data) {
+    console.log(id);
+    console.log(data);
+
+    return (await this.api.put(`/profile/edit/${id}`, data)).data;
+  }
+
   async deleteUser(id) {
     console.log(id);
 

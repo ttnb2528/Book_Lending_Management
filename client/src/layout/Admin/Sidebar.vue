@@ -5,7 +5,7 @@
     </div>
     <nav class="mt-4">
       <router-link
-        v-for="item in menuItems"
+        v-for="item in filteredSidebarListItem"
         :key="item.name"
         :to="item.path"
         class="flex items-center px-4 py-3 text-sm hover:bg-green-700 transition-colors duration-200"
@@ -37,6 +37,7 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
 import { useRouter } from "vue-router";
 import {
   UserCircleIcon,
@@ -65,6 +66,17 @@ const menuItems = [
 ];
 
 const router = useRouter();
+
+const user = JSON.parse(localStorage.getItem("user")).user;
+
+const filteredSidebarListItem = computed(() => {
+    if (user.role === 'admin') {
+        return menuItems;
+    } else {
+        return menuItems.filter((item, index) => index !== 1);
+    }
+});
+
 
 const logout = () => {
   authService.logout();
