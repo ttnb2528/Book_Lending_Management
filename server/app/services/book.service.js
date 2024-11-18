@@ -1,19 +1,22 @@
 import { ObjectId } from "mongodb";
+import MongoDB from "../util/mongodb.util.js";
 
 class BookService {
-  constructor(client) {
-    this.Book = client.db().collection("books");
+  constructor() {
+    this.Book = MongoDB.client.db().collection("books");
   }
 
   extractUserData(payload) {
     const Book = {
       MaSach: payload.MaSach,
       TenSach: payload.TenSach,
-      DonGia: payload.DonGia,
-      SoQuyen: payload.SoQuyen,
-      NamXuatBan: payload.NamXuatBan,
+      DonGia: parseFloat(payload.DonGia),
+      SoQuyen: parseInt(payload.SoQuyen),
+      NamXuatBan: parseInt(payload.NamXuatBan),
       MaNXB: payload.MaNXB,
       TacGia: payload.TacGia,
+      AnhSach: payload.AnhSach || null,
+      MoTa: payload.MoTa || null,
     };
 
     return Book;
@@ -37,33 +40,43 @@ class BookService {
   }
 
   async createBook(payload) {
-    const { TenSach } = payload;
-
-    const bookExits = await this.Book.findOne({ TenSach });
-
-    if (bookExits) {
-      return {
-        statusCode: 1,
-        message: "Sách đã tồn tại",
-      };
-    }
-
     try {
+      console.log("Creating book with payload:", payload);
+
+      const existingBook = await this.Book.findOne({
+        TenSach: payload.TenSach
+      });
+
+      if (existingBook) {
+        return {
+          statusCode: 2,
+          message: "Sách này đã tồn tại trong hệ thống"
+        };
+      }
+
       const Book = this.extractUserData(payload);
       Book.MaSach = await this.generalMaSach();
 
-      await this.Book.insertOne(Book);
+      const result = await this.Book.insertOne(Book);
+      console.log("Insert result:", result);
 
-      return {
-        statusCode: 0,
-        message: "Thêm sách thành công",
-      };
+      if (result.acknowledged) {
+        return {
+          statusCode: 0,
+          message: "Thêm sách thành công",
+          data: Book
+        };
+      } else {
+        return {
+          statusCode: 2,
+          message: "Thêm sách thất bại"
+        };
+      }
     } catch (error) {
-      console.error(error);
-
+      console.error("Error in createBook:", error);
       return {
-        statusCode: 2,
-        message: "Thêm sách thất bại",
+        statusCode: -1,
+        message: error.message
       };
     }
   }
@@ -124,11 +137,23 @@ class BookService {
 
   async updateBookById(id, payload) {
     try {
-      const Book = this.extractUserData(payload);
+      // Kiểm tra xem có sách nào khác (không phải sách đang sửa) có cùng tên không
+      const existingBook = await this.Book.findOne({
+        TenSach: payload.TenSach,
+        MaSach: { $ne: id } // Loại trừ sách hiện tại
+      });
 
+      if (existingBook) {
+        return {
+          statusCode: 2,
+          message: "Đã tồn tại sách khác có cùng tên trong hệ thống"
+        };
+      }
+
+      const Book = this.extractUserData(payload);
       const res = await this.Book.updateOne({ MaSach: id }, { $set: Book });
 
-      if (!res) {
+      if (!res.acknowledged) {
         return {
           statusCode: 2,
           message: "Có lỗi xảy ra khi cập nhật sách",
@@ -140,6 +165,7 @@ class BookService {
         message: "Cập nhật sách thành công",
       };
     } catch (error) {
+      console.error("Error in updateBookById:", error);
       return {
         statusCode: -1,
         message: error.message,
@@ -203,6 +229,30 @@ class BookService {
         statusCode: -1,
         message: error.message,
       };
+    }
+  }
+
+  async create(payload) {
+    try {
+      console.log("Received payload:", payload); // Debug log
+
+      // Chuyển đổi các trường số
+      const bookDocument = {
+        ...payload,
+        DonGia: parseFloat(payload.DonGia),
+        SoQuyen: parseInt(payload.SoQuyen),
+        NamXuatBan: parseInt(payload.NamXuatBan),
+      };
+
+      console.log("Processed document:", bookDocument); // Debug log
+
+      const result = await this.Book.insertOne(bookDocument);
+      console.log("Insert result:", result); // Debug log
+
+      return result;
+    } catch (error) {
+      console.error("Error in BookService.create:", error);
+      throw new Error("Error creating book: " + error.message);
     }
   }
 }

@@ -29,8 +29,10 @@
                   <tr>
                     <th class="py-3 px-6 text-left">Mã sách</th>
                     <th class="py-3 px-6 text-left">Tên sách</th>
+                    <th class="py-3 px-6 text-left">Ảnh sách</th>
                     <th class="py-3 px-6 text-left">Đơn giá</th>
                     <th class="py-3 px-6 text-left">Số quyển</th>
+                    <th class="py-3 px-6 text-left">Mô tả</th>
                     <th class="py-3 px-6 text-left">Năm xuất bản</th>
                     <th class="py-3 px-6 text-left">Nhà xuất bản</th>
                     <th class="py-3 px-6 text-left">Tác giả</th>
@@ -47,8 +49,23 @@
                       {{ book.MaSach }}
                     </td>
                     <td class="py-3 px-6 text-left">{{ book.TenSach }}</td>
+                    <td class="py-3 px-6 text-left">
+                      <img
+                        v-if="book.AnhSach"
+                        :src="getImageUrl(book.AnhSach)"
+                        :alt="book.TenSach"
+                        class="w-20 h-20 object-cover rounded"
+                      />
+                    </td>
                     <td class="py-3 px-6 text-left">{{ book.DonGia }}</td>
                     <td class="py-3 px-6 text-left">{{ book.SoQuyen }}</td>
+                    <td class="py-3 px-6 text-left">
+                      <div class="max-w-xs overflow-hidden">
+                        <p class="truncate" :title="book.MoTa">
+                          {{ book.MoTa }}
+                        </p>
+                      </div>
+                    </td>
                     <td class="py-3 px-6 text-left">{{ book.NamXuatBan }}</td>
                     <td class="py-3 px-6 text-left">
                       {{ book.publisherInfo.TenNXB }}
@@ -120,6 +137,14 @@ const getAllBooks = async () => {
     console.error("Error while getting books:", error);
   }
 };
+
+const getImageUrl = (path) => {
+  if (path?.startsWith("http")) {
+    return path;
+  }
+  return `http://localhost:3000${path}`;
+};
+
 onMounted(() => {
   getAllBooks();
 });

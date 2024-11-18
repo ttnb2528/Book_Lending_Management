@@ -1,20 +1,17 @@
 <template>
-  <div class="flex h-screen w-full bg-gray-100">
+  <div class="flex h-screen bg-gray-100">
     <Sidebar />
-    <div class="flex-1 flex flex-col overflow-hidden">
-      <div
-        class="min-h-screen bg-green-50 flex items-center justify-center py-4 px-4 sm:px-6 lg:px-8"
-      >
-        <div class="max-w-md w-full space-y-4">
-          <div>
-            <h2 class="text-center text-3xl font-extrabold text-green-900">
+    <div class="flex-1 overflow-auto">
+      <div class="container mx-auto px-6 py-8">
+        <div class="bg-white rounded-lg shadow-lg p-6 max-w-2xl mx-auto">
+          <div class="mb-8">
+            <h2 class="text-3xl font-bold text-green-900 text-center">
               Chỉnh sửa sách
             </h2>
             <p class="mt-2 text-center text-sm text-green-600">
-              Nhập thông tin chi tiết của cuốn sách
+              Cập nhật thông tin chi tiết của cuốn sách
             </p>
           </div>
-          <!-- Hiển thị BookForm khi dữ liệu sách đã được tải -->
           <BookForm
             v-if="book"
             :isEditing="true"
@@ -23,7 +20,6 @@
             @submit:book="updateBook"
             @cancel="cancelEditBook"
           />
-          <p>{{ message }}</p>
         </div>
       </div>
     </div>
@@ -35,6 +31,8 @@ import BookForm from "@/components/BookForm.vue";
 import Sidebar from "@/layout/Admin/Sidebar.vue";
 import BookService from "@/services/book.service.js";
 import publisherService from "@/services/publisher.service.js";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 export default {
   components: {
@@ -46,7 +44,6 @@ export default {
   },
   data() {
     return {
-      message: "",
       book: null,
       publishers: [],
     };
@@ -58,7 +55,10 @@ export default {
         console.log(this.book);
       } catch (error) {
         console.error(error);
-        this.message = "Lỗi: " + error.response?.data?.message || error.message;
+        toast.error("Không thể tải thông tin sách", {
+          autoClose: 3000,
+          position: toast.POSITION.TOP_RIGHT,
+        });
       }
     },
 
@@ -67,19 +67,38 @@ export default {
         this.publishers = await publisherService.getPublishers();
       } catch (error) {
         console.error("Error while getting publisher:", error);
+        toast.error("Không thể tải danh sách nhà xuất bản", {
+          autoClose: 3000,
+          position: toast.POSITION.TOP_RIGHT,
+        });
       }
     },
 
     async updateBook(data) {
       try {
-        await BookService.updateBook(this.book.MaSach, data);
-        this.message = "Cập nhật sách thành công!";
-        this.$router.push({ name: "Dashboard" });
+        const response = await BookService.updateBook(this.book.MaSach, data);
+        console.log("Update response:", response);
+
+        if (response.statusCode === 0) {
+          toast.success("Cập nhật sách thành công!", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          this.$router.push({ name: "Dashboard" });
+        } else {
+          throw new Error(
+            response.message || "Có lỗi xảy ra khi cập nhật sách"
+          );
+        }
       } catch (error) {
-        console.error(error);
-        this.message = "Lỗi: " + error.response?.data?.message || error.message;
+        console.error("Error updating book:", error);
+        toast.error(error.message || "Có lỗi xảy ra khi cập nhật sách", {
+          autoClose: 3000,
+          position: toast.POSITION.TOP_RIGHT,
+        });
       }
     },
+
     cancelEditBook() {
       if (window.confirm("Bạn có chắc muốn thoát?")) {
         this.$router.push({ name: "Dashboard" });

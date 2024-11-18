@@ -13,17 +13,19 @@ class BookService {
     return (await this.api.get(`/${id}`)).data;
   }
 
-  async createBook(data) {
-    console.log(data);
-
-    return (await this.api.post("/", data)).data;
+  async create(data) {
+    try {
+      console.log("Sending data to server:", data); // Debug log
+      const response = await this.api.post("/", data);
+      console.log("Server response:", response.data); // Debug log
+      return response.data;
+    } catch (error) {
+      console.error("Error in BookService.create:", error);
+      throw error;
+    }
   }
 
   async updateBook(id, data) {
-    console.log(id);
-    
-    console.log(data);
-    
     return (await this.api.put(`/${id}`, data)).data;
   }
 
