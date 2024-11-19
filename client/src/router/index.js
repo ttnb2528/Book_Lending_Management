@@ -22,6 +22,8 @@ import EditLending from "@/views/Admin/EditLending.vue";
 import Login from "@/views/Client/Login.vue";
 import Register from "@/views/Client/Register.vue";
 import HomePage from "@/views/Client/HomePage.vue";
+import Details from "@/views/Client/Details.vue";
+import BorrowBook from "@/views/Client/BorrowBook.vue";
 
 // temp
 import Default from "@/views/Default.vue";
@@ -33,6 +35,21 @@ const routes = [
     path: "/",
     name: "HomePage",
     component: HomePage,
+  },
+
+  {
+    path: "/book/:id",
+    name: "Details",
+    component: Details,
+    props: true,
+    meta: { requiresAuth: true }
+  },
+
+  {
+    path: '/borrow/:id',
+    name: 'BorrowBook',
+    component: () => import('@/views/Client/BorrowBook.vue'),
+    meta: { requiresAuth: true }
   },
 
   {
@@ -173,6 +190,8 @@ const routes = [
     component: EditProfile,
     props: true,
   },
+
+ 
 ];
 
 const router = createRouter({

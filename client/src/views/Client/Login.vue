@@ -7,9 +7,7 @@
         <h2 class="mt-6 text-center text-3xl font-extrabold text-green-900">
           Đăng nhập
         </h2>
-        <p class="mt-2 text-center text-sm text-green-600">
-          Mừng bạn trở lại
-        </p>
+        <p class="mt-2 text-center text-sm text-green-600">Mừng bạn trở lại</p>
       </div>
       <form class="mt-8 space-y-6" @submit.prevent="handleSubmit">
         <input type="hidden" name="remember" value="true" />
@@ -62,8 +60,6 @@
           </div>
         </div>
 
-        
-
         <div>
           <button
             type="submit"
@@ -107,8 +103,8 @@ import { ref } from "vue";
 import { KeyIcon } from "@heroicons/vue/24/solid";
 import AuthService from "@/services/auth.service.js";
 import { useRouter } from "vue-router";
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 const router = useRouter();
 const email = ref("");
@@ -124,12 +120,13 @@ if (user && user.user.role === "user") {
 const handleSubmit = async () => {
   try {
     const data = { email: email.value, password: password.value };
+    console.log(data);
+    
     const response = await AuthService.login(data);
 
-    // console.log(response);
-    
-    
-    if (response.data.statusCode === 0) {
+    console.log(response);
+
+    if (response.data.statusCode === 0 && response.data.user.role === "user") {
       localStorage.setItem(
         "user",
         JSON.stringify({
@@ -139,18 +136,18 @@ const handleSubmit = async () => {
       );
       toast.success("Đăng nhập thành công!", {
         autoClose: 3000,
-        position: toast.POSITION.TOP_RIGHT
+        position: toast.POSITION.TOP_RIGHT,
       });
       router.push({ name: "HomePage" });
     } else {
       throw new Error(response.message || "Đăng nhập thất bại");
     }
   } catch (err) {
-    console.log("Đăng nhập thất bại:", err);
+    // console.log("Đăng nhập thất bại:", err);
     error.value = err.message;
     toast.error(error.value, {
       autoClose: 3000,
-      position: toast.POSITION.TOP_RIGHT
+      position: toast.POSITION.TOP_RIGHT,
     });
   }
 };

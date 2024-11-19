@@ -20,7 +20,7 @@ class LendingController {
       if (response.statusCode === 0) {
         return res.status(201).json({ data: response });
       } else if (response.statusCode === 1) {
-        return res.status(300).json({ data: response.message });
+        return res.status(200).json({ data: response });
       } else {
         return res.status(500).json({ data: response });
       }

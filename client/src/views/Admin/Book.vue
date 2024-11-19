@@ -30,6 +30,7 @@
                     <th class="py-3 px-6 text-left">Mã sách</th>
                     <th class="py-3 px-6 text-left">Tên sách</th>
                     <th class="py-3 px-6 text-left">Ảnh sách</th>
+                    <th class="py-3 px-6 text-left">Thể loại</th>
                     <th class="py-3 px-6 text-left">Đơn giá</th>
                     <th class="py-3 px-6 text-left">Số quyển</th>
                     <th class="py-3 px-6 text-left">Mô tả</th>
@@ -57,6 +58,7 @@
                         class="w-20 h-20 object-cover rounded"
                       />
                     </td>
+                    <td class="py-3 px-6 text-left">{{ book.TheLoai }}</td>
                     <td class="py-3 px-6 text-left">{{ book.DonGia }}</td>
                     <td class="py-3 px-6 text-left">{{ book.SoQuyen }}</td>
                     <td class="py-3 px-6 text-left">

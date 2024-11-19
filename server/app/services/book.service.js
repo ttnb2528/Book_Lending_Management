@@ -17,8 +17,8 @@ class BookService {
       TacGia: payload.TacGia,
       AnhSach: payload.AnhSach || null,
       MoTa: payload.MoTa || null,
+      TheLoai: payload.TheLoai || 'other',
     };
-
     return Book;
   }
 

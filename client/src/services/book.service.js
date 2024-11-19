@@ -1,12 +1,16 @@
 import createApiClient from "./api.service";
 
 class BookService {
-  constructor(baseUrl = "http://localhost:3000/api/v1/book") {
+  constructor(baseUrl = "/api/v1/book") {
     this.api = createApiClient(baseUrl);
   }
 
   async getBooks() {
     return (await this.api.get("/")).data;
+  }
+
+  async getBooksByCategory(category) {
+    return (await this.api.get(`/category/${category}`)).data;
   }
 
   async getBook(id) {

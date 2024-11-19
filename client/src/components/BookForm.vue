@@ -98,6 +98,27 @@
         </div>
 
         <div>
+          <label for="TheLoai" class="font-medium text-gray-700"
+            >Thể loại</label
+          >
+          <select
+            v-model="bookLocal.TheLoai"
+            class="appearance-none block w-full px-3 py-2 border border-green-300 text-green-900 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+          >
+            <option disabled value="">Chọn thể loại</option>
+            <option value="novel">Tiểu thuyết</option>
+            <option value="comic">Truyện tranh</option>
+            <option value="dictionary">Từ điển</option>
+            <option value="textbook">Sách giáo khoa</option>
+            <option value="reference">Sách tham khảo</option>
+            <option value="other">Khác</option>
+          </select>
+          <div v-if="errors.TheLoai" class="text-xs text-red-600 mt-1">
+            {{ errors.TheLoai }}
+          </div>
+        </div>
+
+        <div>
           <label for="TacGia" class="font-medium text-gray-700">Tác giả</label>
           <input
             name="TacGia"
@@ -111,13 +132,11 @@
         </div>
 
         <div>
-          <label for="AnhSach" class="font-medium text-gray-700">Ảnh sách</label>
+          <label for="AnhSach" class="font-medium text-gray-700"
+            >Ảnh sách</label
+          >
           <div class="mt-1 flex items-center space-x-4">
-            <input 
-              type="file" 
-              @change="handleImageChange" 
-              class="w-full" 
-            />
+            <input type="file" @change="handleImageChange" class="w-full" />
             <!-- Hiển thị ảnh preview với kích thước nhỏ hơn -->
             <div v-if="bookLocal.AnhSach" class="h-20 w-20 relative">
               <img
@@ -184,6 +203,7 @@ export default {
         SoQuyen: "Số quyển",
         NamXuatBan: "Năm xuất bản",
         MaNXB: "Nhà xuất bản",
+        TheLoai: "Thể loại",
         TacGia: "Tác giả",
         AnhSach: "Ảnh sách",
         MoTa: "Mô tả",
@@ -194,7 +214,7 @@ export default {
   methods: {
     getImageUrl(path) {
       // Nếu path đã là URL đầy đủ thì trả về luôn
-      if (path?.startsWith('http')) {
+      if (path?.startsWith("http")) {
         return path;
       }
       // Nếu không, thêm base URL của server
@@ -218,7 +238,7 @@ export default {
         }
 
         // Kiểm tra định dạng file
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
         if (!allowedTypes.includes(file.type)) {
           this.errors.AnhSach = "Chỉ chấp nhận file ảnh (JPG, PNG, GIF)";
           return;
@@ -226,13 +246,13 @@ export default {
 
         try {
           const formData = new FormData();
-          formData.append('file', file);
-          
+          formData.append("file", file);
+
           console.log("Uploading file:", file.name); // Debug log
-          
+
           const response = await UploadService.uploadImage(formData);
           console.log("Upload response received:", response); // Debug log
-          
+
           if (response.filePath) {
             this.bookLocal.AnhSach = response.filePath;
             this.errors.AnhSach = null;
@@ -299,6 +319,9 @@ export default {
       }
       if (!this.bookLocal.MoTa) {
         this.errors.MoTa = "Mô tả không được bỏ trống";
+      }
+      if (!this.bookLocal.TheLoai) {
+        this.errors.TheLoai = "Thể loại không được bỏ trống";
       }
 
       // Trả về true nếu không có lỗi
