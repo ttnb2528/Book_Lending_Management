@@ -26,7 +26,7 @@ class UsersController {
         setTokenCookie(res, response.token);
         return res.status(201).json({ data: response });
       } else if (response.statusCode === 1) {
-        return res.status(409).json({ data: response });
+        return res.status(200).json({ data: response });
       } else {
         return res.status(500).json({ data: response });
       }

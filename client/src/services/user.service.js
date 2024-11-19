@@ -5,42 +5,16 @@ class UserService {
     this.api = createApiClient(baseUrl);
   }
 
-  async getUsers(data) {
-    return (await this.api.post("/UserByRole", data)).data;
-  }
-
-  async getUser(id) {
-    console.log(id);
-
-    return (await this.api.get(`/${id}`)).data;
-  }
-
-  async getCurrentUser() {
-    return (await this.api.get("/profile")).data;
-  }
-
   async createUser(data) {
     return (await this.api.post("/", data)).data;
   }
 
+  async getUser(id) {
+    return (await this.api.get(`/${id}`)).data;
+  }
+
   async updateUser(id, data) {
-    console.log(id);
-    console.log(data);
-
     return (await this.api.put(`/${id}`, data)).data;
-  }
-
-  async updateCurrentUser(id, data) {
-    console.log(id);
-    console.log(data);
-
-    return (await this.api.put(`/profile/edit/${id}`, data)).data;
-  }
-
-  async deleteUser(id) {
-    console.log(id);
-
-    return (await this.api.delete(`/${id}`)).data;
   }
 }
 

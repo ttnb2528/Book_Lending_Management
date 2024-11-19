@@ -1,4 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
+
+// Admin
 import LoginPage from "@/views/Auth/LoginPage.vue";
 import Book from "@/views/Admin/Book.vue";
 import AddBook from "@/views/Admin/AddBook.vue";
@@ -16,6 +18,11 @@ import EditPublisher from "@/views/Admin/EditPublisher.vue";
 import AddLending from "@/views/Admin/AddLending.vue";
 import EditLending from "@/views/Admin/EditLending.vue";
 
+// User
+import Login from "@/views/Client/Login.vue";
+import Register from "@/views/Client/Register.vue";
+import HomePage from "@/views/Client/HomePage.vue";
+
 // temp
 import Default from "@/views/Default.vue";
 import Profile from "@/views/Admin/Profile.vue";
@@ -24,14 +31,39 @@ import EditProfile from "@/views/Admin/EditProfile.vue";
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Default,
+    name: "HomePage",
+    component: HomePage,
+  },
+
+  {
+    path: "/login",
+    name: "UserLogin",
+    component: Login,
+  },
+
+  {
+    path: "/register",
+    name: "UserRegister",
+    component: Register,
   },
 
   {
     path: "/admin/book",
     name: "Dashboard",
     component: Book,
+    // beforeEnter: (to, from, next) => {
+    //   if (
+    //     localStorage.getItem("user") &&
+    //     (JSON.parse(localStorage.getItem("user")).user.role === "admin" ||
+    //       JSON.parse(localStorage.getItem("user")).user.role === "staff")
+    //   ) {
+    //     next();
+    //   } else if (localStorage.getItem("user")) {
+    //     next({ name: "HomePage" });
+    //   } else {
+    //     next({ name: "UserLogin" });
+    //   }
+    // },
   },
 
   {

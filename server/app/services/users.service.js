@@ -60,7 +60,7 @@ class UsersService {
     if (userExists) {
       return {
         statusCode: 1,
-        message: "Người dùng đã tồn tại",
+        message: "Email người dùng đã tồn tại",
       };
     }
 
