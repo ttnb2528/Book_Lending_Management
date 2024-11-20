@@ -124,8 +124,8 @@ export default {
       if (!this.staffLocal.DiaChi) {
         this.errors.DiaChi = "Địa chỉ không được bỏ trống";
       }
-      if (!this.staffLocal.DienThoai) {
-        this.errors.DienThoai = "Điện thoại không được bỏ trống";
+      if (!this.staffLocal.DienThoai || this.staffLocal.DienThoai.length !== 10) {
+        this.errors.DienThoai = "Điện thoại không được bỏ trống và phải có 10 số";
       }
       if (!this.staffLocal.ChucVu) {
         this.errors.ChucVu = "Chức vụ không được bỏ trống";

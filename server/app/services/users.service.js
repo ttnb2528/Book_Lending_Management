@@ -170,7 +170,7 @@ class UsersService {
 
   async getAllUsersByRole(role) {
     console.log(role);
-    
+
     try {
       const users = await this.User.find({ role }).toArray();
 
@@ -192,6 +192,18 @@ class UsersService {
   }
 
   async updateUser(id, payload) {
+    const { email } = payload;
+    const userCurrent = await this.User.findOne({ MaID: id });
+
+    const userExists = await this.User.findOne({ email });
+
+    if (userExists && userExists.email !== userCurrent.email) {
+      return {
+        statusCode: 1,
+        message: "Email người dùng đã tồn tại",
+      };
+    }
+
     try {
       const user = this.extractUserData(payload);
 
@@ -223,12 +235,12 @@ class UsersService {
 
   async updateCurrentUser(id, payload) {
     try {
-      const {email, newPassword, ...userData } = payload;
+      const { email, newPassword, ...userData } = payload;
       // console.log(payload);
       const userCurrent = await this.User.findOne({ MaID: id });
 
       const userExists = await this.User.findOne({ email });
-      
+
       if (userExists && userExists.email !== userCurrent.email) {
         return {
           statusCode: 1,

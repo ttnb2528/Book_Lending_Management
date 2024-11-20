@@ -33,6 +33,8 @@
 import StaffForm from "@/components/StaffForm.vue";
 import userService from "@/services/user.service.js";
 import Sidebar from "@/layout/Admin/Sidebar.vue";
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 export default {
   components: {
@@ -61,9 +63,14 @@ export default {
 
     async updateStaff(data) {
       try {
-        await userService.updateUser(this.staff.MaID, data);
-        this.message = "Cập nhật nhân viên thành công!";
-        this.$router.push({ name: "Staff" });
+        const res = await userService.updateUser(this.staff.MaID, data);
+        if(res.data.statusCode === 0) { 
+          this.message = "Cập nhật nhân viên thành công!";
+          this.$router.push({ name: "Staff", query: { success: "edit" } });
+        } else {
+          // this.message = "Lỗi: " + res.data.message;
+          toast.error(res.data.message)
+        }
       } catch (error) {
         console.error(error);
         this.message = "Lỗi: " + error.response?.data?.message || error.message;
