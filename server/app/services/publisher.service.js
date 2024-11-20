@@ -92,6 +92,13 @@ class publisherService {
   }
 
   async updatePublisher(id, payload) {
+    const publisherExits = await this.Publisher.findOne({ TenNXB: payload.TenNXB });
+    if (publisherExits) {
+      return {
+        statusCode: 1,
+        message: "Nhà xuất bản đã tồn tại",
+      };
+    }
     try {
       const res = await this.Publisher.updateOne(
         { MaNXB: id },
