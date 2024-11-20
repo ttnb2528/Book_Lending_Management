@@ -1,5 +1,4 @@
 import { createWebHistory, createRouter } from "vue-router";
-import NotFound from '@/views/NotFound.vue';
 
 // Admin
 import LoginPage from "@/views/Auth/LoginPage.vue";
@@ -27,6 +26,8 @@ import Details from "@/views/Client/Details.vue";
 import BorrowBook from "@/views/Client/BorrowBook.vue";
 import LendingHistory from "@/views/Client/LendingHistory.vue";
 import ProfileUser from "@/views/Client/ProfileUser.vue";
+
+import NotFound from "@/views/NotFound.vue";
 
 // temp
 import Default from "@/views/Default.vue";

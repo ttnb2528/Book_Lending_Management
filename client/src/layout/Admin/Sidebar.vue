@@ -78,8 +78,12 @@ const checkAuth = () => {
 
   if(userData.user.role === 'admin') {
     filteredSidebarListItem.value = menuItems;
-  } else {
+  } else if (userData.user.role === 'staff') {
     filteredSidebarListItem.value = menuItems.filter((item, index) => index !== 1);
+  } else {
+    router.push('/login');
+    localStorage.removeItem('user');
+    return false;
   }
   return true;
 };
