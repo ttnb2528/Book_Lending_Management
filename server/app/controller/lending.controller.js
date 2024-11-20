@@ -8,7 +8,7 @@ class LendingController {
 
     const NgayMuon = new Date();
     const data = { ...req.body, NgayMuon };
-    // console.log(req.body);
+    console.log(req.body);
 
     if (!MaDocGia || !MaSach) {
       return next(new ApiError(400, "MaDocGia and MaSach are required"));

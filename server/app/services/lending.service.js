@@ -48,10 +48,11 @@ class LendingService {
     
 
     const lendingExits = await this.lending.find({ MaDocGia, MaSach }).toArray();
-    console.log(lendingExits[lendingExits.length - 1].TinhTrang !== LendingStatus.RETURNED);
+    console.log(lendingExits);
+    
     
 
-    if (lendingExits) {
+    if (lendingExits.length > 0) {
       if (lendingExits[lendingExits.length - 1].TinhTrang !== LendingStatus.RETURNED) {
         // Kiểm tra nếu chưa trả
         return {

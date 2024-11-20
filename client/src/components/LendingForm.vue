@@ -151,7 +151,7 @@ export default {
 
     async getAllUsers() {
       try {
-        const response = await userService.getUsers({ role: "user" });
+        const response = await userService.getUserByRole({ role: "user" });
         this.allReaders = response.data.map((user) => user.MaID);
       } catch (error) {
         console.error(error);

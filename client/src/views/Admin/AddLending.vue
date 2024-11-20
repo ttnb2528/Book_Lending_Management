@@ -30,6 +30,8 @@
 import LendingForm from "@/components/LendingForm.vue";
 import lendingService from "@/services/lending.service.js";
 import Sidebar from "@/layout/Admin/Sidebar.vue";
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 export default {
   components: {
@@ -44,9 +46,14 @@ export default {
   methods: {
     async addLending(lending) {
       try {
-        await lendingService.createLending(lending);
-        this.message = "Thêm Phiếu mượn thành công!";
-        this.$router.push({ name: "Lending" });
+        const res = await lendingService.createLending(lending);
+        console.log(res);
+        if(res.data.statusCode === 0) {
+          // this.message = "Thêm Phiếu mượn thành công!";
+          this.$router.push({ name: "Lending", query: { success: "add" } });
+        } else {
+          toast.error(res.data.message)
+        }
       } catch (error) {
         console.error(error);
         this.message = "Lỗi: " + error.response?.data?.message || error.message;
