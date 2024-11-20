@@ -134,6 +134,7 @@ export default {
     },
     submitStaff() {
       if (this.validateFields()) {
+        this.staffLocal.email = this.staffLocal.email.trim();
         this.$emit("submit:staff", this.staffLocal);
       }
     },

@@ -109,6 +109,7 @@ export default {
     },
     submitUser() {
       if (this.validateFields()) {
+        this.userLocal.email = this.userLocal.email.trim();
         this.$emit("submit:user", this.userLocal);
       }
     },

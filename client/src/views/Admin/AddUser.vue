@@ -26,6 +26,8 @@
 import UserForm from "@/components/UserForm.vue";
 import userService from "@/services/user.service.js";
 import Sidebar from "@/layout/Admin/Sidebar.vue";
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 export default {
   components: {
@@ -40,9 +42,15 @@ export default {
   methods: {
     async addUser(user) {
       try {
-        await userService.createUser(user);
-        this.message = "Thêm độc giả thành công!";
-        this.$router.push({ name: "User" });
+        const res = await userService.createUser(user);
+        console.log(res);
+        if(res.data.statusCode === 0) {
+          this.message = "Thêm độc giả thành công!";
+          this.$router.push({ name: "User", query: { success: "add" } });
+        } else {
+          // this.message = "Lỗi: " + res.data.message;
+          toast.error(res.data.message)
+        }
       } catch (error) {
         console.error(error);
         this.message = "Lỗi: " + error.response?.data?.message || error.message;

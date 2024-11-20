@@ -48,7 +48,7 @@
                   >
                     <td class="py-4 px-4 sm:px-6 whitespace-nowrap">{{ staff.MaID }}</td>
                     <td class="py-4 px-4 sm:px-6">{{ staff.Ten }}</td>
-                    <td class="hidden sm:table-cell py-4 px-4 sm:px-6">{{ staff.NgaySinh }}</td>
+                    <td class="hidden sm:table-cell py-4 px-4 sm:px-6">{{ formatDate(staff.NgaySinh) }}</td>
                     <td class="hidden sm:table-cell py-4 px-4 sm:px-6">{{ staff.Phai }}</td>
                     <td class="hidden sm:table-cell py-4 px-4 sm:px-6">{{ staff.email }}</td>
                     <td class="hidden sm:table-cell py-4 px-4 sm:px-6">{{ staff.DienThoai }}</td>
@@ -145,6 +145,11 @@ const searchQuery = ref("");
 const currentPage = ref(1);
 const itemsPerPage = ref(10);
 let searchTimeout = null;
+
+const formatDate = (dateString) => {
+  return new Date(dateString).toLocaleDateString('vi-VN');
+};
+
 
 // Filtered staffs based on search
 const filteredStaffs = computed(() => {
