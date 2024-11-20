@@ -188,6 +188,8 @@ onMounted(() => {
   const userData = JSON.parse(localStorage.getItem('user'));
   if (userData) {
     userName.value = userData.user.Ten;
+  } else {
+    router.push('/login');
   }
   
   // Add click outside listener

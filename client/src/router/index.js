@@ -1,4 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
+import NotFound from '@/views/NotFound.vue';
 
 // Admin
 import LoginPage from "@/views/Auth/LoginPage.vue";
@@ -206,6 +207,12 @@ const routes = [
     component: EditProfile,
     props: true,
   },
+
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFound
+  } 
 ];
 
 const router = createRouter({
