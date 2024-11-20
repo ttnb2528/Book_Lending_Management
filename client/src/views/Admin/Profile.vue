@@ -111,7 +111,9 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 const router = useRouter();
 
@@ -128,8 +130,8 @@ const editProfile = (userID) => {
 
 const fetchUserData = async () => {
   try {
-    // const userData = await userService.getCurrentUser();
-    const userData = JSON.parse(localStorage.getItem('user')).user;
+    const userData = await userService.getCurrentUser();
+    // const userData = JSON.parse(localStorage.getItem('user')).user;
     console.log("User data:", userData);
 
     user.value = userData;
@@ -138,7 +140,23 @@ const fetchUserData = async () => {
   }
 };
 
+
+
 onMounted(() => {
   fetchUserData();
+
+  const route = useRoute();
+  if (route.query.success) {
+    if (route.query.success === 'edit') {
+      toast.success("Đã cập nhật thông tin thành công!", {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+        onClose: () => {
+          // Xóa query parameter khi toast đóng
+          router.replace({ query: {} });
+        }
+      });
+    }
+  }
 });
 </script>

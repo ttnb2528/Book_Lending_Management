@@ -237,9 +237,14 @@ class UsersService {
     try {
       const { email, newPassword, ...userData } = payload;
       // console.log(payload);
+      // console.log(email);
+      
       const userCurrent = await this.User.findOne({ MaID: id });
-
+      // console.log(userCurrent);
+      
       const userExists = await this.User.findOne({ email });
+      // console.log(userExists);
+      
 
       if (userExists && userExists.email !== userCurrent.email) {
         return {
@@ -249,6 +254,8 @@ class UsersService {
       }
 
       let updateData = userData;
+      console.log(updateData);
+      
 
       if (newPassword) {
         const saltRounds = Number(process.env.SALT);
@@ -258,6 +265,7 @@ class UsersService {
       }
       delete updateData._id;
       // Cập nhật người dùng
+      updateData.email = email;
       const res = await this.User.updateOne({ MaID: id }, { $set: updateData });
 
       if (!res) {

@@ -172,6 +172,7 @@ import Header from "@/layout/Client/Header.vue";
 import Footer from "@/layout/Client/Footer.vue";
 import UserService from "@/services/user.service";
 import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 const router = useRouter();
 const isEditing = ref(false);

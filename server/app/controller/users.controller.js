@@ -151,8 +151,6 @@ class UsersController {
   static async updateCurrentUser(req, res, next) {
     const { id } = req.params;
     const { email, newPassword, ...otherFields } = req.body;
-   console.log(id);
-   console.log(req.body);
    
    
 

@@ -33,6 +33,8 @@
 import ProfileForm from "@/components/ProfileForm.vue";
 import userService from "@/services/user.service.js";
 import Sidebar from "@/layout/Admin/Sidebar.vue";
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 export default {
   components: {
@@ -51,8 +53,8 @@ export default {
   methods: {
     async getCurrentUser() {
       try {
-        // this.profile = await userService.getCurrentUser();
-        this.profile = JSON.parse(localStorage.getItem('user')).user;
+        this.profile = await userService.getCurrentUser();
+        // this.profile = JSON.parse(localStorage.getItem('user')).user;
         // console.log(this.staff);
       } catch (error) {
         console.error(error);
@@ -61,10 +63,19 @@ export default {
     },
 
     async updateProfile(data) {
+      data.newPassword = data.password;
+      delete data.password;
+      console.log(data);
+      
       try {
-        await userService.updateCurrentUser(this.profile.MaID, data);
-        this.message = "Cập nhật thông tin thành công!";
-        this.$router.push({ name: "AdminProfile" });
+        const res = await userService.updateCurrentUser(this.profile.MaID, data);
+        console.log(res);
+        if(res.data.statusCode === 0) {
+          this.message = "Cập nhật thông tin thành công!";
+          this.$router.push({ name: "AdminProfile", query: { success: "edit" } });
+        } else {
+          toast.error(res.data.message);
+        }
       } catch (error) {
         console.error(error);
         this.message = "Lỗi: " + error.response?.data?.message || error.message;
