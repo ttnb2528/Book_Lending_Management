@@ -80,11 +80,8 @@ export default {
         console.log("Update response:", response);
 
         if (response.statusCode === 0) {
-          toast.success("Cập nhật sách thành công!", {
-            autoClose: 3000,
-            position: toast.POSITION.TOP_RIGHT,
-          });
-          this.$router.push({ name: "Dashboard" });
+          
+          this.$router.push({ name: "Dashboard", query: { success: "edit" } });
         } else {
           throw new Error(
             response.message || "Có lỗi xảy ra khi cập nhật sách"

@@ -30,61 +30,61 @@ import Sidebar from "@/layout/Admin/Sidebar.vue";
 import BookForm from "@/components/BookForm.vue";
 import BookService from "@/services/book.service";
 import PublisherService from "@/services/publisher.service";
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 export default {
-    components: {
-        Sidebar,
-        BookForm,
-    },
-    data() {
-        return {
-            publishers: [],
-            message: "",
+  components: {
+    Sidebar,
+    BookForm,
+  },
+  data() {
+    return {
+      publishers: [],
+      message: "",
+    };
+  },
+  async created() {
+    try {
+      this.publishers = await PublisherService.getPublishers();
+    } catch (error) {
+      console.error("Error fetching publishers:", error);
+      toast.error("Không thể tải danh sách nhà xuất bản");
+    }
+  },
+  methods: {
+    async handleBookSubmit(book) {
+      try {
+        console.log("Submitting book data:", book);
+
+        const bookData = {
+          ...book,
+          TenSach: book.TenSach.trim(),
+          DonGia: parseFloat(book.DonGia),
+          SoQuyen: parseInt(book.SoQuyen),
+          NamXuatBan: parseInt(book.NamXuatBan),
+          AnhSach: book.AnhSach || null,
+          MoTa: book.MoTa || null,
         };
-    },
-    async created() {
-        try {
-            this.publishers = await PublisherService.getPublishers();
-        } catch (error) {
-            console.error("Error fetching publishers:", error);
-            toast.error("Không thể tải danh sách nhà xuất bản");
+
+        console.log("Processed book data:", bookData);
+
+        const response = await BookService.create(bookData);
+        console.log("Server response:", response);
+
+        if (response.statusCode === 0) {
+          this.$router.push({ name: "Dashboard", query: { success: "add" } });
+        } else {
+          throw new Error(response.message || "Có lỗi xảy ra khi thêm sách");
         }
+      } catch (error) {
+        console.error("Error submitting book:", error);
+        toast.error(error.message || "Có lỗi xảy ra khi thêm sách");
+      }
     },
-    methods: {
-        async handleBookSubmit(book) {
-            try {
-                console.log("Submitting book data:", book);
-
-                const bookData = {
-                    ...book,
-                    DonGia: parseFloat(book.DonGia),
-                    SoQuyen: parseInt(book.SoQuyen),
-                    NamXuatBan: parseInt(book.NamXuatBan),
-                    AnhSach: book.AnhSach || null,
-                    MoTa: book.MoTa || null
-                };
-
-                console.log("Processed book data:", bookData);
-
-                const response = await BookService.create(bookData);
-                console.log("Server response:", response);
-
-                if (response.statusCode === 0) {
-                    toast.success(response.message);
-                    this.$router.push({ name: "Dashboard" });
-                } else {
-                    throw new Error(response.message || "Có lỗi xảy ra khi thêm sách");
-                }
-            } catch (error) {
-                console.error("Error submitting book:", error);
-                toast.error(error.message || "Có lỗi xảy ra khi thêm sách");
-            }
-        },
-        handleCancel() {
-            this.$router.push({ name: "Dashboard" });
-        },
+    handleCancel() {
+      this.$router.push({ name: "Dashboard" });
     },
+  },
 };
 </script>

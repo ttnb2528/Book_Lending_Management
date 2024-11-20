@@ -272,6 +272,7 @@ export default {
       if (this.validateFields()) {
         try {
           console.log("Book data to submit:", this.bookLocal);
+          this.bookLocal.TenSach = this.bookLocal.TenSach.trim();
           this.$emit("submit:book", this.bookLocal);
         } catch (error) {
           console.error("Error submitting form:", error);

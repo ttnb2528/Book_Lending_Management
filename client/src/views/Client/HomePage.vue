@@ -65,8 +65,8 @@
                 <BookOpenIcon v-else class="h-32 w-32 text-green-600" />
               </div>
               <div class="p-4">
-                <h3 class="text-lg font-semibold mb-2">{{ book.TenSach }}</h3>
-                <p class="text-gray-600 text-sm mb-4">
+                <h3 class="text-lg font-semibold mb-2 line-clamp-1">{{ book.TenSach }}</h3>
+                <p class="text-gray-600 text-sm mb-4 line-clamp-1">
                   {{ book.MoTa || "Đang cập nhật mô tả..." }}
                 </p>
                 <button
