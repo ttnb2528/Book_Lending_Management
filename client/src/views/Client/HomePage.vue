@@ -52,28 +52,45 @@
             <div
               v-for="book in paginatedBooks"
               :key="book.id"
-              class="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer"
-              @click="router.push(`/book/${book.MaSach}`)"
+              class="bg-white rounded-lg shadow-md overflow-hidden"
             >
-              <div class="p-4 flex justify-center items-center bg-green-50">
+              <!-- Book Image/Icon -->
+              <div 
+                class="p-4 flex justify-center items-center bg-green-50 cursor-pointer"
+                @click="router.push(`/book/${book.MaSach}`)"
+              >
                 <img
                   v-if="book.AnhSach"
                   :src="getImageUrl(book.AnhSach)"
                   :alt="book.TenSach"
-                  class="h-32 w-32 object-cover"
+                  class="h-32 w-32 object-cover hover:scale-125 transition-transform duration-300"
                 />
                 <BookOpenIcon v-else class="h-32 w-32 text-green-600" />
               </div>
+
+              <!-- Book Info -->
               <div class="p-4">
-                <h3 class="text-lg font-semibold mb-2 line-clamp-1">{{ book.TenSach }}</h3>
+                <h3 
+                  class="text-lg font-semibold mb-2 cursor-pointer line-clamp-1 hover:text-green-600"
+                  @click="router.push(`/book/${book.MaSach}`)"
+                >
+                  {{ book.TenSach }}
+                </h3>
                 <p class="text-gray-600 text-sm mb-4 line-clamp-1">
                   {{ book.MoTa || "Đang cập nhật mô tả..." }}
                 </p>
-                <button
-                  class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors"
-                >
-                  Mượn sách
-                </button>
+                <div class="flex justify-between items-center">
+                  <span class="text-sm text-gray-500">
+                    Còn {{ book.SoQuyen }} quyển
+                  </span>
+                  <button
+                    @click="handleBorrow(book)"
+                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    :disabled="book.SoQuyen <= 0"
+                  >
+                    {{ book.SoQuyen > 0 ? 'Mượn sách' : 'Hết sách' }}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -226,6 +243,17 @@ const nextPage = () => {
 const setCategory = (category) => {
   currentCategory.value = category;
   currentPage.value = 1; // Reset về trang 1 khi đổi category
+};
+
+const handleBorrow = (book) => {
+  if (book.SoQuyen <= 0) {
+    toast.error("Sách đã hết, không thể mượn", {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 3000
+    });
+    return;
+  }
+  router.push(`/borrow/${book.MaSach}`);
 };
 
 const router = useRouter();

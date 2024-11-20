@@ -42,7 +42,7 @@
                   {{ book.SoQuyen }}
                 </p>
                 <p>
-                  <span class="font-medium">Giá mượn:</span> {{ book.DonGia }} đ
+                  <span class="font-medium">Giá mượn:</span> {{ formatCurrency(book.DonGia) }}
                 </p>
                 <p>
                   <span class="font-medium">Nhà xuất bản:</span>
@@ -190,6 +190,7 @@ const handleSubmit = async () => {
 
     if (response?.data?.statusCode === 0) {
       toast.success("Đăng ký mượn sách thành công!");
+      fetchBookDetails();
       // router.push('/');
     } else {
       toast.error(response?.data?.message);
@@ -198,6 +199,14 @@ const handleSubmit = async () => {
     console.error("Error:", error);
     toast.error("Có lỗi xảy ra khi đăng ký mượn sách");
   }
+};
+
+const formatCurrency = (amount) => {
+  if (!amount) return '0 VNĐ';
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND'
+  }).format(amount);
 };
 
 onMounted(() => {

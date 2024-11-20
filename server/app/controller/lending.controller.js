@@ -24,7 +24,7 @@ class LendingController {
       } else if (response.statusCode === 1) {
         return res.status(200).json({ data: response });
       } else {
-        return res.status(500).json({ data: response });
+        return res.status(200).json({ data: response });
       }
     } catch (error) {
       console.error(error);
@@ -82,7 +82,7 @@ class LendingController {
       if (response.statusCode === 0 || response.statusCode === 3) {
         return res.status(200).json({ data: response });
       } else {
-        return res.status(500).json({ data: response });
+        return res.status(200).json({ data: response });
       }
     } catch (e) {
       console.error(e);
@@ -117,7 +117,7 @@ class LendingController {
       if (response.statusCode === 0) {
         return res.status(200).json({ data: response });
       } else {
-        return res.status(500).json({ data: response });
+        return res.status(200).json({ data: response });
       }
     } catch (error) {
       console.error(error);

@@ -40,7 +40,7 @@
 
             <div class="border-b pb-4">
               <p class="text-sm text-gray-500">Ngày sinh</p>
-              <p class="text-lg">{{ userInfo.NgaySinh }}</p>
+              <p class="text-lg">{{ formatDate(userInfo.NgaySinh) }}</p>
             </div>
 
             <div class="border-b pb-4">
@@ -264,6 +264,10 @@ const handleSubmit = async () => {
     
     toast.error(error.message || 'Có lỗi xảy ra khi cập nhật thông tin');
   }
+};
+
+const formatDate = (dateString) => {
+  return new Date(dateString).toLocaleDateString('vi-VN');
 };
 
 onMounted(() => {

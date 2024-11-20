@@ -62,8 +62,8 @@
                 >
                   <dt class="text-sm font-medium text-gray-500">Ngày sinh</dt>
                   <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    <!-- {{ formatDate(user.NgaySinh) }} -->
-                    {{ user.NgaySinh }}
+                    {{ formatDate(user.NgaySinh) }}
+                    <!-- {{ user.NgaySinh }} -->
                   </dd>
                 </div>
                 <div
@@ -138,6 +138,10 @@ const fetchUserData = async () => {
   } catch (error) {
     console.error("Error fetching user data:", error);
   }
+};
+
+const formatDate = (dateString) => {
+  return new Date(dateString).toLocaleDateString('vi-VN');
 };
 
 

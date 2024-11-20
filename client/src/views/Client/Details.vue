@@ -28,7 +28,7 @@
                 <span class="font-semibold">Tác giả:</span> {{ book.TacGia }}
               </p>
               <p class="text-gray-600">
-                <span class="font-semibold">Giá mượn:</span> {{ book.DonGia }} đ
+                <span class="font-semibold">Giá mượn:</span> {{ formatCurrency(book.DonGia) }}
               </p>
 
               <p class="text-gray-600">
@@ -122,6 +122,14 @@ const fetchBookDetails = async () => {
 
 const handleBorrow = () => {
   router.push(`/borrow/${book.value.MaSach}`);
+};
+
+const formatCurrency = (amount) => {
+  if (!amount) return '0 VNĐ';
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND'
+  }).format(amount);
 };
 
 onMounted(() => {

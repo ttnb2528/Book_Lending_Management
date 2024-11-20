@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import {
   UserCircleIcon,
@@ -53,6 +53,8 @@ import {
 } from "@heroicons/vue/24/outline";
 import authService from "@/services/auth.service.js";
 
+const router = useRouter();
+
 const menuItems = [
   { name: "Quản lý Sách", path: "/admin/book", icon: BookOpenIcon },
   { name: "Quản lý Nhân viên", path: "/admin/staff", icon: UsersIcon },
@@ -60,27 +62,47 @@ const menuItems = [
   { name: "Quản lý Mượn sách", path: "/admin/lending", icon: DocumentTextIcon },
   {
     name: "Quản lý Nhà xuất bản",
-    path: "publisher",
+    path: "/admin/publisher",
     icon: BuildingOfficeIcon,
   },
 ];
 
-const router = useRouter();
+const filteredSidebarListItem = ref([]);
 
-const user = JSON.parse(localStorage.getItem("user")).user;
+const checkAuth = () => {
+  const userData = JSON.parse(localStorage.getItem('user'));
+  if (!userData) {
+    router.push('/admin/login');
+    return false;
+  }
 
-const filteredSidebarListItem = computed(() => {
-    if (user.role === 'admin') {
-        return menuItems;
-    } else {
-        return menuItems.filter((item, index) => index !== 1);
-    }
-});
-
+  if(userData.user.role === 'admin') {
+    filteredSidebarListItem.value = menuItems;
+  } else {
+    filteredSidebarListItem.value = menuItems.filter((item, index) => index !== 1);
+  }
+  return true;
+};
 
 const logout = () => {
   authService.logout();
   localStorage.removeItem("user");
   router.push({ name: "AdminLogin" });
 };
+
+onMounted(() => {
+  checkAuth();
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!checkAuth()) {
+      next('/admin/login');
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
 </script>

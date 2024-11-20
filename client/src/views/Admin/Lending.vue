@@ -15,13 +15,13 @@
                 class="w-full sm:w-auto flex-grow p-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
                 @input="handleSearch"
               />
-              <router-link :to="{ name: 'AddLending' }">
+              <!-- <router-link :to="{ name: 'AddLending' }">
                 <button
                   class="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 >
                   Thêm Phiếu mượn
                 </button>
-              </router-link>
+              </router-link> -->
             </div>
 
             <!-- Table Section -->
@@ -95,12 +95,12 @@
                     </td>
                     <td class="py-4 px-4 sm:px-6 text-center">
                       <div class="flex items-center justify-center space-x-3">
-                        <button
+                        <!-- <button
                           @click="editLending(lending.MaPhieuMuon)"
                           class="text-blue-600 hover:text-blue-900"
                         >
                           <PencilIcon class="h-5 w-5" />
-                        </button>
+                        </button> -->
                         <button
                           @click="deleteLending(lending.MaPhieuMuon)"
                           class="text-red-600 hover:text-red-900"
@@ -333,6 +333,8 @@ const deleteLending = async (id) => {
   if (window.confirm("Bạn có chắc muốn xóa phiếu mượn này?")) {
     try {
       const response = await lendingService.deleteLending(id);
+      console.log(response);
+      
       if (response.data.statusCode === 0) {
         toast.success("Xóa phiếu mượn thành công", {
           position: toast.POSITION.TOP_RIGHT,
