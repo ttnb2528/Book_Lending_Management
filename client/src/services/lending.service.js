@@ -13,6 +13,10 @@ class LendingService {
     return (await this.api.get(`/${id}`)).data;
   }
 
+  async getLendingsByMaDocGia(MaDocGia) {
+    return (await this.api.get(`/lendings/${MaDocGia}`)).data;
+  }
+
   async createLending(data) {
     console.log(data);
 

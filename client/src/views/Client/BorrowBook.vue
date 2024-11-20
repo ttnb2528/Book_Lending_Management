@@ -10,7 +10,9 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <!-- Ảnh sách bên trái -->
           <div class="flex flex-col items-center space-y-4">
-            <div class="w-full aspect-square bg-green-50 rounded-lg flex items-center justify-center p-4">
+            <div
+              class="w-full aspect-square bg-green-50 rounded-lg flex items-center justify-center p-4"
+            >
               <img
                 v-if="book.AnhSach"
                 :src="getImageUrl(book.AnhSach)"
@@ -32,10 +34,20 @@
             <div class="mb-6 p-4 bg-green-50 rounded-lg">
               <h2 class="font-semibold text-lg mb-3">Thông tin sách</h2>
               <div class="grid grid-cols-2 gap-4">
-                <p><span class="font-medium">Thể loại:</span> {{ book.TheLoai }}</p>
-                <p><span class="font-medium">Số quyển còn:</span> {{ book.SoQuyen }}</p>
-                <p><span class="font-medium">Giá mượn:</span> {{ book.DonGia }} đ</p>
-                <p><span class="font-medium">Nhà xuất bản:</span> {{ book.publisherInfo?.TenNXB }}</p>
+                <p>
+                  <span class="font-medium">Thể loại:</span> {{ book.TheLoai }}
+                </p>
+                <p>
+                  <span class="font-medium">Số quyển còn:</span>
+                  {{ book.SoQuyen }}
+                </p>
+                <p>
+                  <span class="font-medium">Giá mượn:</span> {{ book.DonGia }} đ
+                </p>
+                <p>
+                  <span class="font-medium">Nhà xuất bản:</span>
+                  {{ book.publisherInfo?.TenNXB }}
+                </p>
               </div>
             </div>
 
@@ -87,30 +99,30 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { BookOpenIcon } from '@heroicons/vue/24/solid';
-import BookService from '@/services/book.service';
+import { ref, computed, watch, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { BookOpenIcon } from "@heroicons/vue/24/solid";
+import BookService from "@/services/book.service";
 import Header from "@/layout/Client/Header.vue";
 import Footer from "@/layout/Client/Footer.vue";
-import { toast } from 'vue3-toastify';
-import lendingService from '@/services/lending.service.js';
+import { toast } from "vue3-toastify";
+import lendingService from "@/services/lending.service.js";
 
 const route = useRoute();
 const router = useRouter();
 const book = ref({});
-const returnDate = ref('');
-const dateError = ref('');
+const returnDate = ref("");
+const dateError = ref("");
 
 // Tính ngày hiện tại
 const today = new Date();
-const minDate = today.toISOString().split('T')[0];
+const minDate = today.toISOString().split("T")[0];
 
 // Tính ngày tối đa có thể mượn (30 ngày từ hiện tại)
 const maxDate = computed(() => {
   const max = new Date(today);
   max.setDate(max.getDate() + 30);
-  return max.toISOString().split('T')[0];
+  return max.toISOString().split("T")[0];
 });
 
 // Kiểm tra ngày trả hợp lệ
@@ -120,16 +132,16 @@ const validateReturnDate = () => {
   const minAllowedDate = new Date(minDate);
 
   if (selectedDate < minAllowedDate) {
-    dateError.value = 'Ngày trả không được nhỏ hơn ngày hiện tại';
+    dateError.value = "Ngày trả không được nhỏ hơn ngày hiện tại";
     return false;
   }
 
   if (selectedDate > maxAllowedDate) {
-    dateError.value = 'Thời gian mượn không được quá 30 ngày';
+    dateError.value = "Thời gian mượn không được quá 30 ngày";
     return false;
   }
 
-  dateError.value = '';
+  dateError.value = "";
   return true;
 };
 
@@ -138,7 +150,7 @@ watch(returnDate, validateReturnDate);
 
 const getImageUrl = (path) => {
   if (!path) return null;
-  if (path.startsWith('http')) {
+  if (path.startsWith("http")) {
     return path;
   }
   return `http://localhost:3000${path}`;
@@ -150,12 +162,12 @@ const fetchBookDetails = async () => {
     if (response) {
       book.value = response;
     } else {
-      throw new Error('Không thể tải thông tin sách');
+      throw new Error("Không thể tải thông tin sách");
     }
   } catch (error) {
-    console.error('Error fetching book details:', error);
+    console.error("Error fetching book details:", error);
     toast.error(error.message);
-    router.push('/');
+    router.push("/");
   }
 };
 
@@ -168,29 +180,28 @@ const handleSubmit = async () => {
     // TODO: Gọi API mượn sách với ngày trả
     const borrowData = {
       MaSach: book.value.MaSach,
-      MaDocGia: JSON.parse(localStorage.getItem('user')).user.MaID,
+      MaDocGia: JSON.parse(localStorage.getItem("user")).user.MaID,
       NgayTra: returnDate.value,
     };
-    
-    console.log('Borrow data:', borrowData);
+
+    console.log("Borrow data:", borrowData);
     const response = await lendingService.createLending(borrowData);
     console.log(response?.data);
-    
-    if(response?.data?.statusCode === 0) {
-      toast.success('Đăng ký mượn sách thành công!');
+
+    if (response?.data?.statusCode === 0) {
+      toast.success("Đăng ký mượn sách thành công!");
       // router.push('/');
     } else {
       toast.error(response?.data?.message);
     }
-    
   } catch (error) {
-    console.error('Error:', error);
-    toast.error('Có lỗi xảy ra khi đăng ký mượn sách');
+    console.error("Error:", error);
+    toast.error("Có lỗi xảy ra khi đăng ký mượn sách");
   }
 };
 
 onMounted(() => {
   fetchBookDetails();
-  returnDate.value = today.toISOString().split('T')[0];
+  returnDate.value = today.toISOString().split("T")[0];
 });
-</script> 
+</script>

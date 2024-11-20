@@ -6,6 +6,8 @@ class LendingController {
   static async createLending(req, res, next) {
     const { MaDocGia, MaSach } = req.body;
 
+    const NgayMuon = new Date();
+    const data = { ...req.body, NgayMuon };
     // console.log(req.body);
 
     if (!MaDocGia || !MaSach) {
@@ -15,7 +17,7 @@ class LendingController {
     try {
       const lendingService = new LendingService(MongoDB.client);
 
-      const response = await lendingService.createLending(req.body);
+      const response = await lendingService.createLending(data);
 
       if (response.statusCode === 0) {
         return res.status(201).json({ data: response });
@@ -87,6 +89,20 @@ class LendingController {
 
       return next(
         new ApiError(500, "An error occurred while updating the lending")
+      );
+    }
+  }
+
+  static async getLendingsByMaDocGia(req, res, next) {
+    const { MaDocGia } = req.params;
+    try {
+      const lendingService = new LendingService(MongoDB.client);
+      const lendings = await lendingService.getLendingsByMaDocGia(MaDocGia);
+      return res.status(200).json(lendings);
+    } catch (error) {
+      console.error(error);
+      return next(
+        new ApiError(500, "An error occurred while getting the lendings")
       );
     }
   }

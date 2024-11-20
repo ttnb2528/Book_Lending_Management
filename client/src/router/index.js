@@ -24,6 +24,8 @@ import Register from "@/views/Client/Register.vue";
 import HomePage from "@/views/Client/HomePage.vue";
 import Details from "@/views/Client/Details.vue";
 import BorrowBook from "@/views/Client/BorrowBook.vue";
+import LendingHistory from "@/views/Client/LendingHistory.vue";
+import ProfileUser from "@/views/Client/ProfileUser.vue";
 
 // temp
 import Default from "@/views/Default.vue";
@@ -48,7 +50,21 @@ const routes = [
   {
     path: '/borrow/:id',
     name: 'BorrowBook',
-    component: () => import('@/views/Client/BorrowBook.vue'),
+    component: BorrowBook,
+    meta: { requiresAuth: true }
+  },
+
+  {
+    path: '/history',
+    name: 'LendingHistory',
+    component: LendingHistory,
+    meta: { requiresAuth: true }
+  },
+
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: ProfileUser,
     meta: { requiresAuth: true }
   },
 
@@ -190,8 +206,6 @@ const routes = [
     component: EditProfile,
     props: true,
   },
-
- 
 ];
 
 const router = createRouter({

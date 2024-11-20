@@ -150,8 +150,11 @@ class UsersController {
 
   static async updateCurrentUser(req, res, next) {
     const { id } = req.params;
-    const { email, password, ...otherFields } = req.body;
-    // console.log("abc", req.body);
+    const { email, newPassword, ...otherFields } = req.body;
+   console.log(id);
+   console.log(req.body);
+   
+   
 
     const usersService = new UsersService(MongoDB.client);
     const user = await usersService.getUserById(id);
@@ -169,14 +172,14 @@ class UsersController {
 
       const response = await usersService.updateCurrentUser(req.params.id, {
         email,
-        password,
+        newPassword,
         ...otherFields,
       });
 
       if (response.statusCode === 0) {
         return res.status(200).json({ data: response });
       } else {
-        return res.status(500).json({ data: response });
+        return res.status(200).json({ data: response });
       }
     } catch (error) {
       console.error(error);

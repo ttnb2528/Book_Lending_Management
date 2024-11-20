@@ -10,6 +10,8 @@ router
 
 router.route("/:id").get(LendingController.getLendingById);
 
+router.route("/lendings/:MaDocGia").get(LendingController.getLendingsByMaDocGia);
+
 router.route("/:id").put(LendingController.updateLendingById);
 
 router.route("/:id").delete(LendingController.deleteLendingById);

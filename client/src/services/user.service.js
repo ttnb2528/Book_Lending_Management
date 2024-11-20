@@ -21,8 +21,24 @@ class UserService {
     return (await this.api.get(`/${id}`)).data;
   }
 
+  async getUserByRole(role) {
+    return (await this.api.post("/UserByRole",  role )).data;
+  }
+
+  async getCurrentUser() {
+    return (await this.api.get("/profile")).data;
+  }
+
   async updateUser(id, data) {
     return (await this.api.put(`/${id}`, data)).data;
+  }
+
+  async updateCurrentUser(id, data) {
+    return (await this.api.put(`/profile/edit/${id}`, data)).data;
+  }
+
+  async deleteUser(id) {
+    return (await this.api.delete(`/${id}`)).data;
   }
 }
 

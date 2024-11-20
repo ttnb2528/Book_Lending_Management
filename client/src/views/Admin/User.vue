@@ -99,7 +99,7 @@ const users = ref([]);
 
 const getAllUsers = async () => {
   try {
-    const response = await userService.getUsers({ role: "user" });
+    const response = await userService.getUserByRole({ role: "user" });
     users.value = response.data;
     console.log(users.value);
   } catch (error) {

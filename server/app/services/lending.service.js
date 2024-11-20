@@ -44,11 +44,15 @@ class LendingService {
 
   async createLending(payload) {
     const { MaDocGia, MaSach } = payload;
+    console.log(MaDocGia, MaSach);
+    
 
-    const lendingExits = await this.lending.findOne({ MaDocGia, MaSach });
+    const lendingExits = await this.lending.find({ MaDocGia, MaSach }).toArray();
+    console.log(lendingExits[lendingExits.length - 1].TinhTrang !== LendingStatus.RETURNED);
+    
 
     if (lendingExits) {
-      if (lendingExits.TinhTrang !== LendingStatus.RETURNED) {
+      if (lendingExits[lendingExits.length - 1].TinhTrang !== LendingStatus.RETURNED) {
         // Kiểm tra nếu chưa trả
         return {
           statusCode: 1,
@@ -180,6 +184,62 @@ class LendingService {
         ])
         .toArray();
       return lending.length > 0 ? lending[0] : null;
+    } catch (error) {
+      console.error(error);
+      return {
+        statusCode: -1,
+        message: "An error occurred while getting the lending",
+      };
+    }
+  }
+
+  async getLendingsByMaDocGia(MaDocGia) {
+    try {
+      const lending = await this.lending
+        .aggregate([
+          {
+            $match: { MaDocGia: MaDocGia },
+          },
+          {
+            $lookup: {
+              from: "users1", // Bảng users
+              localField: "MaDocGia", // Trường mã độc giả trong lendings
+              foreignField: "MaID", // Trường mã ID trong users
+              as: "userInfo", // Tên trường sau khi lookup
+            },
+          },
+          {
+            $unwind: "$userInfo", // Tách mảng userInfo để dễ truy cập
+          },
+          {
+            $lookup: {
+              from: "books", // Bảng books
+              localField: "MaSach", // Trường mã sách trong lendings
+              foreignField: "MaSach", // Trường mã sách trong books
+              as: "bookInfo", // Tên trường sau khi lookup
+            },
+          },
+          {
+            $unwind: "$bookInfo", // Tách mảng bookInfo để dễ truy cập
+          },
+          {
+            $project: {
+              MaPhieuMuon: 1,
+              NgayMuon: 1,
+              NgayTra: 1,
+              TinhTrang: 1,
+              "userInfo.Ten": 1, // Chỉ lấy tên người dùng từ userInfo
+              "userInfo.email": 1, // Lấy email người dùng
+              "userInfo.MaID": 1,
+              "bookInfo.MaSach": 1,
+              "bookInfo.TenSach": 1, // Chỉ lấy tên sách từ bookInfo
+              "bookInfo.TacGia": 1, // Lấy tác giả sách
+              "bookInfo.DonGia": 1, // Lấy đơn giá sách
+            },
+          },
+        ])
+        .toArray();
+      return lending.length > 0 ? lending : null;
     } catch (error) {
       console.error(error);
       return {

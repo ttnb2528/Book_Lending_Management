@@ -51,7 +51,8 @@ export default {
   methods: {
     async getCurrentUser() {
       try {
-        this.profile = await userService.getCurrentUser();
+        // this.profile = await userService.getCurrentUser();
+        this.profile = JSON.parse(localStorage.getItem('user')).user;
         // console.log(this.staff);
       } catch (error) {
         console.error(error);

@@ -128,7 +128,8 @@ const editProfile = (userID) => {
 
 const fetchUserData = async () => {
   try {
-    const userData = await userService.getCurrentUser();
+    // const userData = await userService.getCurrentUser();
+    const userData = JSON.parse(localStorage.getItem('user')).user;
     console.log("User data:", userData);
 
     user.value = userData;

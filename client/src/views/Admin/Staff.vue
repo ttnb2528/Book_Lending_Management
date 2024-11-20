@@ -101,9 +101,9 @@ const staffs = ref([]);
 
 const getAllStaffs = async () => {
   try {
-    const response = await userService.getUsers({ role: "staff" });
+    const response = await userService.getUserByRole({ role: "staff" });
     staffs.value = response.data;
-    // console.log(response);
+    console.log(response);
   } catch (error) {
     console.error("Error while getting books:", error);
   }

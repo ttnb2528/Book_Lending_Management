@@ -14,8 +14,14 @@
       </div>
       <nav>
         <ul class="flex space-x-6 items-center">
-          <li><a href="#" class="hover:underline">Trang chủ</a></li>
-          <li><a href="#" class="hover:underline">Lịch sử mượn</a></li>
+          <li>
+            <router-link to="/" class="hover:underline">Trang chủ</router-link>
+          </li>
+          <li>
+            <router-link to="/history" class="hover:underline"
+              >Lịch sử mượn</router-link
+            >
+          </li>
           <li class="relative">
             <div
               @click="toggleUserMenu"
