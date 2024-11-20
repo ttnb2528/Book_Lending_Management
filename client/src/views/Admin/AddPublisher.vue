@@ -30,6 +30,8 @@
 import PublisherForm from "@/components/PublisherForm.vue";
 import publisherService from "@/services/publisher.service.js";
 import Sidebar from "@/layout/Admin/Sidebar.vue";
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 export default {
   components: {
@@ -44,10 +46,31 @@ export default {
   methods: {
     async addPublisher(publisher) {
       try {
-        await publisherService.createPublisher(publisher);
-        this.message = "Thêm nhà xuất bản thành công!";
-        this.$router.push({ name: "Publisher" });
-      } catch (error) {
+        const res = await publisherService.createPublisher(publisher);
+        console.log(res);
+        if (res.data.statusCode === 0) {
+          this.message = "Thêm nhà xuất bản thành công!";
+          
+              this.$router.push({ 
+              name: 'Publisher',
+              // Thêm query param để báo hiệu vừa thêm thành công
+              query: { 
+                success: 'add',
+                timestamp: Date.now() 
+              }})
+          }
+        
+          // this.$router.push({ name: "Publisher" });
+         else {
+          toast.error(res.data.message, {
+            position: toast.POSITION.TOP_RIGHT
+            
+            }
+          );
+        }
+      }
+    
+       catch (error) {
         console.error(error);
         this.message = "Lỗi: " + error.response?.data?.message || error.message;
       }

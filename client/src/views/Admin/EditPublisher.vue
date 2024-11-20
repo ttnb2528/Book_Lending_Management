@@ -33,6 +33,8 @@
 import PublisherForm from "@/components/PublisherForm.vue";
 import publisherService from "@/services/publisher.service.js";
 import Sidebar from "@/layout/Admin/Sidebar.vue";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 export default {
   components: {
@@ -61,9 +63,24 @@ export default {
 
     async updatePublisher(data) {
       try {
-        await publisherService.updatePublisher(this.publisher.MaNXB, data);
-        this.message = "Cập nhật Nhà xuất bản thành công!";
-        this.$router.push({ name: "Publisher" });
+        const res = await publisherService.updatePublisher(
+          this.publisher.MaNXB,
+          data
+        );
+        if (res.data.statusCode === 0) {
+          this.message = "Cập nhật Nhà xuất bản thành công!";
+          this.$router.push({
+            name: "Publisher",
+            query: {
+              success: "edit",
+              timestamp: Date.now(),
+            },
+          });
+        } else {
+          toast.error(res.data.message, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        }
       } catch (error) {
         console.error(error);
         this.message = "Lỗi: " + error.response?.data?.message || error.message;
