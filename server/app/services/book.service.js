@@ -4,6 +4,7 @@ import MongoDB from "../util/mongodb.util.js";
 class BookService {
   constructor() {
     this.Book = MongoDB.client.db().collection("books");
+    this.Lending = MongoDB.client.db().collection("lendings");
   }
 
   extractUserData(payload) {
@@ -175,9 +176,17 @@ class BookService {
 
   async deleteBookById(id) {
     try {
+      const hasBookBorrowed = await this.Lending.findOne({ MaSach: id });
+      if (hasBookBorrowed && hasBookBorrowed.TinhTrang !== "Đã trả") {
+        return {
+          statusCode: 2,
+          message: "Sách đang được mượn, không thể xóa",
+        };
+      }
       const res = await this.Book.deleteOne({ MaSach: id });
+      const res2 = await this.Lending.deleteOne({ MaSach: id });
 
-      if (!res) {
+      if (!res || !res2) {
         return {
           statusCode: 2,
           message: "Có lỗi xảy ra khi xóa sách",

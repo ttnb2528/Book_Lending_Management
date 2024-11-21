@@ -206,7 +206,7 @@ class UsersController {
       if (response.statusCode === 0) {
         return res.status(200).json({ data: response });
       } else {
-        return res.status(500).json({ data: response });
+        return res.status(200).json({ data: response });
       }
     } catch (error) {
       console.error(error);

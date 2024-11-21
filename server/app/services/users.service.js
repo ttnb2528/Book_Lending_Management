@@ -5,6 +5,7 @@ import { generateToken } from "../util/createToken.js";
 class UsersService {
   constructor(client) {
     this.User = client.db().collection("users1");
+    this.Lending = client.db().collection("lendings");
   }
 
   extractUserData(payload) {
@@ -289,6 +290,13 @@ class UsersService {
 
   async deleteUser(id) {
     try {
+      const hasBookBorrowed = await this.Lending.findOne({ MaDocGia: id });
+      if (hasBookBorrowed && hasBookBorrowed.TinhTrang !== "Đã trả") {
+        return {
+          statusCode: 2,
+          message: "Người dùng đang mượn sách, không thể xóa",
+        };
+      }
       const res = await this.User.deleteOne({ MaID: id });
 
       if (!res) {

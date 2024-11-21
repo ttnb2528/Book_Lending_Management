@@ -7,7 +7,9 @@
           <!-- Users Management -->
           <div class="bg-white shadow-lg rounded-lg overflow-hidden">
             <!-- Search and Add Section -->
-            <div class="p-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div
+              class="p-4 flex flex-col sm:flex-row justify-between items-center gap-4"
+            >
               <input
                 type="text"
                 v-model="searchQuery"
@@ -27,15 +29,37 @@
             <!-- Table Section -->
             <div class="overflow-x-auto">
               <table class="min-w-full bg-white">
-                <thead class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+                <thead
+                  class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal"
+                >
                   <tr>
                     <th class="py-3 px-4 sm:px-6 text-left">Mã DG</th>
                     <th class="py-3 px-4 sm:px-6 text-left">Tên DG</th>
-                    <th class="hidden sm:table-cell py-3 px-4 sm:px-6 text-left">Email</th>
-                    <th class="hidden sm:table-cell py-3 px-4 sm:px-6 text-left">Giới tính</th>
-                    <th class="hidden sm:table-cell py-3 px-4 sm:px-6 text-left">Ngày sinh</th>
-                    <th class="hidden sm:table-cell py-3 px-4 sm:px-6 text-left">Địa chỉ</th>
-                    <th class="hidden sm:table-cell py-3 px-4 sm:px-6 text-left">Số điện thoại</th>
+                    <th
+                      class="hidden sm:table-cell py-3 px-4 sm:px-6 text-left"
+                    >
+                      Email
+                    </th>
+                    <th
+                      class="hidden sm:table-cell py-3 px-4 sm:px-6 text-left"
+                    >
+                      Giới tính
+                    </th>
+                    <th
+                      class="hidden sm:table-cell py-3 px-4 sm:px-6 text-left"
+                    >
+                      Ngày sinh
+                    </th>
+                    <th
+                      class="hidden sm:table-cell py-3 px-4 sm:px-6 text-left"
+                    >
+                      Địa chỉ
+                    </th>
+                    <th
+                      class="hidden sm:table-cell py-3 px-4 sm:px-6 text-left"
+                    >
+                      Số điện thoại
+                    </th>
                     <th class="py-3 px-4 sm:px-6 text-center">Thao tác</th>
                   </tr>
                 </thead>
@@ -45,13 +69,25 @@
                     :key="user._id"
                     class="border-b border-gray-200 hover:bg-gray-50 transition duration-150 ease-in-out"
                   >
-                    <td class="py-4 px-4 sm:px-6 whitespace-nowrap">{{ user.MaID }}</td>
+                    <td class="py-4 px-4 sm:px-6 whitespace-nowrap">
+                      {{ user.MaID }}
+                    </td>
                     <td class="py-4 px-4 sm:px-6">{{ user.Ten }}</td>
-                    <td class="hidden sm:table-cell py-4 px-4 sm:px-6">{{ user.email }}</td>
-                    <td class="hidden sm:table-cell py-4 px-4 sm:px-6">{{ user.Phai }}</td>
-                    <td class="hidden sm:table-cell py-4 px-4 sm:px-6">{{ formatDate(user.NgaySinh) }}</td>
-                    <td class="hidden sm:table-cell py-4 px-4 sm:px-6">{{ user.DiaChi }}</td>
-                    <td class="hidden sm:table-cell py-4 px-4 sm:px-6">{{ user.DienThoai }}</td>
+                    <td class="hidden sm:table-cell py-4 px-4 sm:px-6">
+                      {{ user.email }}
+                    </td>
+                    <td class="hidden sm:table-cell py-4 px-4 sm:px-6">
+                      {{ user.Phai }}
+                    </td>
+                    <td class="hidden sm:table-cell py-4 px-4 sm:px-6">
+                      {{ formatDate(user.NgaySinh) }}
+                    </td>
+                    <td class="hidden sm:table-cell py-4 px-4 sm:px-6">
+                      {{ user.DiaChi }}
+                    </td>
+                    <td class="hidden sm:table-cell py-4 px-4 sm:px-6">
+                      {{ user.DienThoai }}
+                    </td>
                     <td class="py-4 px-4 sm:px-6 text-center">
                       <div class="flex items-center justify-center space-x-3">
                         <button
@@ -95,7 +131,11 @@
                     @click="currentPage--"
                     :disabled="currentPage === 1"
                     class="px-3 py-1 rounded border"
-                    :class="currentPage === 1 ? 'text-gray-400 border-gray-200' : 'text-green-600 border-green-300 hover:bg-green-50'"
+                    :class="
+                      currentPage === 1
+                        ? 'text-gray-400 border-gray-200'
+                        : 'text-green-600 border-green-300 hover:bg-green-50'
+                    "
                   >
                     Trước
                   </button>
@@ -105,7 +145,11 @@
                     :key="page"
                     @click="currentPage = page"
                     class="px-3 py-1 rounded border"
-                    :class="currentPage === page ? 'bg-green-500 text-white border-green-500' : 'text-green-600 border-green-300 hover:bg-green-50'"
+                    :class="
+                      currentPage === page
+                        ? 'bg-green-500 text-white border-green-500'
+                        : 'text-green-600 border-green-300 hover:bg-green-50'
+                    "
                   >
                     {{ page }}
                   </button>
@@ -114,7 +158,11 @@
                     @click="currentPage++"
                     :disabled="currentPage === totalPages"
                     class="px-3 py-1 rounded border"
-                    :class="currentPage === totalPages ? 'text-gray-400 border-gray-200' : 'text-green-600 border-green-300 hover:bg-green-50'"
+                    :class="
+                      currentPage === totalPages
+                        ? 'text-gray-400 border-gray-200'
+                        : 'text-green-600 border-green-300 hover:bg-green-50'
+                    "
                   >
                     Sau
                   </button>
@@ -134,8 +182,8 @@ import { PencilIcon, TrashIcon } from "@heroicons/vue/24/outline";
 import userService from "@/services/user.service";
 import Sidebar from "@/layout/Admin/Sidebar.vue";
 import { useRouter, useRoute } from "vue-router";
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 const router = useRouter();
 const users = ref([]);
@@ -146,19 +194,19 @@ let searchTimeout = null;
 
 // Format date function
 const formatDate = (dateString) => {
-  if (!dateString) return '';
-  return new Date(dateString).toLocaleDateString('vi-VN');
+  if (!dateString) return "";
+  return new Date(dateString).toLocaleDateString("vi-VN");
 };
 
 // Filtered users based on search
 const filteredUsers = computed(() => {
-  return users.value.filter(user => {
+  return users.value.filter((user) => {
     const searchLower = searchQuery.value.toLowerCase();
     return (
-      (user.Ten?.toLowerCase() || '').includes(searchLower) ||
-      (user.email?.toLowerCase() || '').includes(searchLower) ||
-      (user.MaID?.toLowerCase() || '').includes(searchLower) ||
-      (user.DienThoai || '').includes(searchQuery.value)
+      (user.Ten?.toLowerCase() || "").includes(searchLower) ||
+      (user.email?.toLowerCase() || "").includes(searchLower) ||
+      (user.MaID?.toLowerCase() || "").includes(searchLower) ||
+      (user.DienThoai || "").includes(searchQuery.value)
     );
   });
 });
@@ -185,7 +233,7 @@ const handleSearch = () => {
     if (filteredUsers.value.length === 0 && searchQuery.value) {
       toast.info("Không tìm thấy kết quả phù hợp", {
         position: toast.POSITION.TOP_RIGHT,
-        autoClose: 3000
+        autoClose: 3000,
       });
     }
   }, 300);
@@ -204,7 +252,7 @@ const getAllUsers = async () => {
     console.error("Error while getting users:", error);
     toast.error("Không thể tải danh sách độc giả", {
       position: toast.POSITION.TOP_RIGHT,
-      autoClose: 3000
+      autoClose: 3000,
     });
   }
 };
@@ -216,7 +264,7 @@ const editUser = (id) => {
     console.error("Error navigating to edit:", error);
     toast.error("Không thể mở trang chỉnh sửa", {
       position: toast.POSITION.TOP_RIGHT,
-      autoClose: 3000
+      autoClose: 3000,
     });
   }
 };
@@ -225,20 +273,25 @@ const deleteUser = async (id) => {
   if (window.confirm("Bạn có chắc muốn xóa độc giả này?")) {
     try {
       const response = await userService.deleteUser(id);
+      // console.log(response);
+
       if (response.data.statusCode === 0) {
         toast.success("Xóa độc giả thành công", {
           position: toast.POSITION.TOP_RIGHT,
-          autoClose: 3000
+          autoClose: 3000,
         });
         await getAllUsers();
       } else {
-        throw new Error(response.message || "Xóa thất bại");
+        toast.error(response.data.message || "Không thể xóa độc giả", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000,
+        });
       }
     } catch (error) {
       console.error("Error while deleting user:", error);
       toast.error(error.message || "Không thể xóa độc giả", {
         position: toast.POSITION.TOP_RIGHT,
-        autoClose: 3000
+        autoClose: 3000,
       });
     }
   }
@@ -250,22 +303,22 @@ onMounted(() => {
   // Kiểm tra query params để hiển thị toast
   const route = useRoute();
   if (route.query.success) {
-    if (route.query.success === 'add') {
+    if (route.query.success === "add") {
       toast.success("Đã thêm độc giả thành công!", {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 3000,
         onClose: () => {
           router.replace({ query: {} });
-        }
+        },
       });
     }
-    if (route.query.success === 'edit') {
+    if (route.query.success === "edit") {
       toast.success("Đã cập nhật thông tin độc giả thành công!", {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 3000,
         onClose: () => {
           router.replace({ query: {} });
-        }
+        },
       });
     }
   }

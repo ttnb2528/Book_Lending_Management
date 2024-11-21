@@ -1,7 +1,7 @@
 <template>
   <aside class="w-64 bg-green-800 text-white">
     <div class="p-4 bg-green-900">
-      <h1 class="text-2xl font-semibold">Library Admin</h1>
+      <h1 class="text-2xl font-semibold">Library TTNB Admin</h1>
     </div>
     <nav class="mt-4">
       <router-link
