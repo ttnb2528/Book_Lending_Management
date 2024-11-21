@@ -257,6 +257,7 @@ const isValidTransition = (currentStatus, newStatus) => {
 const getAllLendings = async () => {
   try {
     const response = await lendingService.getLendings();
+    
     lendings.value = response.map((lending) => ({
       ...lending,
       isEditing: false,

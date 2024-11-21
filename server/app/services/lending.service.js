@@ -155,6 +155,7 @@ class LendingService {
             "bookInfo.TenSach": 1, // Chỉ lấy tên sách từ bookInfo
             "bookInfo.TacGia": 1, // Lấy tác giả sách
             "bookInfo.DonGia": 1, // Lấy đơn giá sách
+            "bookInfo.AnhSach": 1, // Lấy đường dẫn ảnh sách
           },
         },
       ]).toArray();
